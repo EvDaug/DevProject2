@@ -1,0 +1,2 @@
+# Don't upload the folder with all the libraries in it
+packages/
