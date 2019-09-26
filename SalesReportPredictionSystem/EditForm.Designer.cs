@@ -173,6 +173,7 @@
             this.Controls.Add(this.tbName);
             this.Name = "EditForm";
             this.Text = "Sales Prediction Report System";
+            this.Load += new System.EventHandler(this.EditForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

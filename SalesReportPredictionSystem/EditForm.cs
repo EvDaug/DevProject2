@@ -20,15 +20,20 @@ namespace SalesReportPredictionSystem
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             this.Hide();
-            MainForm form = new MainForm();
-            form.ShowDialog();
+            //MainForm form = new MainForm();
+            //form.ShowDialog();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Hide();
-            MainForm form = new MainForm();
-            form.ShowDialog();
+            //MainForm form = new MainForm();
+            //form.ShowDialog();
+        }
+
+        private void EditForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
