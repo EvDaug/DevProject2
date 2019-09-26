@@ -31,20 +31,26 @@
             this.btnMonthly = new System.Windows.Forms.Button();
             this.btnWeekly = new System.Windows.Forms.Button();
             this.btnReport = new System.Windows.Forms.Button();
-            this.lbStock = new System.Windows.Forms.DataGridView();
+            this.dgvStock = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblDate = new System.Windows.Forms.Label();
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).BeginInit();
             this.SuspendLayout();
             // 
             // btnMonthly
             // 
             this.btnMonthly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.btnMonthly.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnMonthly.Location = new System.Drawing.Point(471, 474);
+            this.btnMonthly.Location = new System.Drawing.Point(700, 474);
             this.btnMonthly.Name = "btnMonthly";
-            this.btnMonthly.Size = new System.Drawing.Size(388, 57);
+            this.btnMonthly.Size = new System.Drawing.Size(640, 57);
             this.btnMonthly.TabIndex = 0;
             this.btnMonthly.Text = "View Monthly Sales";
             this.btnMonthly.UseVisualStyleBackColor = false;
@@ -53,9 +59,9 @@
             // btnWeekly
             // 
             this.btnWeekly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnWeekly.Location = new System.Drawing.Point(67, 474);
+            this.btnWeekly.Location = new System.Drawing.Point(50, 474);
             this.btnWeekly.Name = "btnWeekly";
-            this.btnWeekly.Size = new System.Drawing.Size(398, 57);
+            this.btnWeekly.Size = new System.Drawing.Size(640, 57);
             this.btnWeekly.TabIndex = 1;
             this.btnWeekly.Text = "View Weekly Sales";
             this.btnWeekly.UseVisualStyleBackColor = false;
@@ -64,28 +70,53 @@
             // btnReport
             // 
             this.btnReport.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnReport.Location = new System.Drawing.Point(67, 537);
+            this.btnReport.Location = new System.Drawing.Point(50, 537);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(398, 57);
+            this.btnReport.Size = new System.Drawing.Size(640, 57);
             this.btnReport.TabIndex = 2;
             this.btnReport.Text = "Generate CSV Report";
             this.btnReport.UseVisualStyleBackColor = false;
             // 
-            // lbStock
-            //           
-            this.lbStock.ColumnCount = 5;
-            this.lbStock.Columns[0].Name = "Id";
-            this.lbStock.Columns[1].Name = "ItemName";
-            this.lbStock.Columns[2].Name = "BrandName";
-            this.lbStock.Columns[3].Name = "StockSold";
-            this.lbStock.Columns[4].Name = "CurrentStock";
-            this.lbStock.ReadOnly=true;
-            
-            this.lbStock.BackColor = System.Drawing.SystemColors.GradientActiveCaption; 
-            this.lbStock.Location = new System.Drawing.Point(67, 95);
-            this.lbStock.Name = "lbStock";
-            this.lbStock.Size = new System.Drawing.Size(792, 354);
-            this.lbStock.TabIndex = 3;
+            // dgvStock
+            // 
+            this.dgvStock.AllowUserToResizeColumns = false;
+            this.dgvStock.AllowUserToResizeRows = false;
+            this.dgvStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5});
+            this.dgvStock.Location = new System.Drawing.Point(50, 87);
+            this.dgvStock.Name = "dgvStock";
+            this.dgvStock.ReadOnly = true;
+            this.dgvStock.Size = new System.Drawing.Size(1290, 350);
+            this.dgvStock.TabIndex = 3;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // lblDate
             // 
@@ -100,7 +131,7 @@
             // 
             // tbSearch
             // 
-            this.tbSearch.Location = new System.Drawing.Point(599, 43);
+            this.tbSearch.Location = new System.Drawing.Point(1074, 35);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(193, 31);
             this.tbSearch.TabIndex = 5;
@@ -108,20 +139,20 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(798, 35);
+            this.btnSearch.Location = new System.Drawing.Point(1273, 27);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(67, 46);
             this.btnSearch.TabIndex = 6;
             this.btnSearch.Text = "find";
             this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click+= new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // btnAdd
             // 
             this.btnAdd.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnAdd.Location = new System.Drawing.Point(471, 537);
+            this.btnAdd.Location = new System.Drawing.Point(700, 537);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(388, 57);
+            this.btnAdd.Size = new System.Drawing.Size(640, 57);
             this.btnAdd.TabIndex = 7;
             this.btnAdd.Text = "Add Item";
             this.btnAdd.UseVisualStyleBackColor = false;
@@ -132,18 +163,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(924, 629);
+            this.ClientSize = new System.Drawing.Size(1424, 629);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.lblDate);
-            this.Controls.Add(this.lbStock);
+            this.Controls.Add(this.dgvStock);
             this.Controls.Add(this.btnReport);
             this.Controls.Add(this.btnWeekly);
             this.Controls.Add(this.btnMonthly);
             this.Name = "MainForm";
             this.Text = "Sales Prediction Report System";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,13 +186,16 @@
         private System.Windows.Forms.Button btnMonthly;
         private System.Windows.Forms.Button btnWeekly;
         private System.Windows.Forms.Button btnReport;
-        private System.Windows.Forms.DataGridView lbStock;
+        private System.Windows.Forms.DataGridView dgvStock;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.TextBox tbSearch;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnAdd;
-
-      
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
     }
      
 }

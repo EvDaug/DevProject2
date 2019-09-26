@@ -11,6 +11,14 @@ namespace SqlTest
             return conn;
         }
 
+
+        /* 
+        ------ WARNING -------
+        Main() function cannot be used as Program.cs uses Main to launch application 
+        */
+        
+
+        /*
         public static void Main(string[] args)
         {
             Console.WriteLine("Opening DB...");
@@ -29,5 +37,6 @@ namespace SqlTest
 
             Console.ReadKey(true);
         }
+        */
     }
 }
