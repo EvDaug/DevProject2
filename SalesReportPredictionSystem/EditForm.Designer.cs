@@ -1,4 +1,6 @@
-﻿namespace SalesReportPredictionSystem
+﻿using System;
+
+namespace SalesReportPredictionSystem
 {
     partial class EditForm
     {
@@ -6,7 +8,9 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private int index;
 
+        
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -19,6 +23,14 @@
             }
             base.Dispose(disposing);
         }
+        /*
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+          
+           
+
+        }
+        */
 
         #region Windows Form Designer generated code
 
@@ -141,7 +153,7 @@
             this.btnUpdate.TabIndex = 11;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+           this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnCancel
             // 

@@ -6,7 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+
 
 namespace SalesReportPredictionSystem
 {
@@ -26,6 +28,7 @@ namespace SalesReportPredictionSystem
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
+       
         private void btnMonthly_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -79,21 +82,21 @@ namespace SalesReportPredictionSystem
             dgvStock.Columns[2].HeaderText = "Brand";
             dgvStock.Columns[3].HeaderText = "Stock Remaining";
             dgvStock.Columns[4].HeaderText = "Amount Sold";
-
             // populate table data
-            string[] row0 = { "001", "item1", "brand1",
-                "3", "5" };
-            string[] row1 = { "002", "item2", "brand1",
-                "6", "7" };
-            string[] row2 = { "003", "item3", "brand3",
-                "3", "4" };
-            string[] row3 = { "004", "item4", "brand4",
-                "2", "3" };
-            this.dgvStock.Rows.Add(row0);
-            this.dgvStock.Rows.Add(row1);
-            this.dgvStock.Rows.Add(row2);
-            this.dgvStock.Rows.Add(row3);
-
+            //this query updates the gui with everythig in the data base
+            //may be more simple way to do this with datagridview??
+            dbconnect.Init();
+            MySqlCommand cmd = new MySqlCommand("SELECT id,ProductName,brand,stockRemaining, stockSold FROM table1", dbconnect.handle);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string[] row0 = {
+                    reader.GetInt32(0).ToString(),  reader.GetString(1),  reader.GetString(2).ToString(),
+                    reader.GetInt32(3).ToString(),  reader.GetInt32(4).ToString()
+                };
+                this.dgvStock.Rows.Add(row0);
+            }
+            reader.Close();
             // create edit buttons for table columns
             DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
             editButtonColumn.Name = "Edit Item";
@@ -114,11 +117,11 @@ namespace SalesReportPredictionSystem
             {
                 // TEST
                 // sets the date lable to the row clicked
-                lblDate.Text = e.RowIndex.ToString();
-
-                //Do something with your button.
+                lblDate.Text = e.RowIndex.ToString();               
                 //this.Hide();
-                EditForm form = new EditForm();
+                //find the prodcut id of current row
+                int i = int.Parse(this.dgvStock.Rows[e.RowIndex].Cells[0].Value.ToString());
+                EditForm form = new EditForm(i);
                 form.ShowDialog();
             }
         }

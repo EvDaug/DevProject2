@@ -1,4 +1,6 @@
-﻿namespace SalesReportPredictionSystem
+﻿using System.Windows.Forms;
+
+namespace SalesReportPredictionSystem
 {
     partial class MainForm
     {
@@ -186,7 +188,8 @@
         private System.Windows.Forms.Button btnMonthly;
         private System.Windows.Forms.Button btnWeekly;
         private System.Windows.Forms.Button btnReport;
-        private System.Windows.Forms.DataGridView dgvStock;
+        //clean up public ->
+        public System.Windows.Forms.DataGridView dgvStock;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.TextBox tbSearch;
         private System.Windows.Forms.Button btnSearch;
@@ -196,6 +199,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+
+        
     }
      
 }
