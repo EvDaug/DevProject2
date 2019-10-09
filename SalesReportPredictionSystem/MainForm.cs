@@ -17,92 +17,37 @@ namespace SalesReportPredictionSystem
         public MainForm()
         {
             InitializeComponent();
-            PopulateDataGridView();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // fix window size
-            this.MinimumSize = new System.Drawing.Size(this.Width+80, this.Height);
+            this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            InitializeGrid();
+            ReloadGrid();
         }
 
-       
-        private void btnMonthly_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            MonthlyForm form = new MonthlyForm();
-            form.ShowDialog();
-        }
-
-        private void btnWeekly_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            WeeklyForm form = new WeeklyForm();
-            form.ShowDialog();
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            AddForm form = new AddForm();
-            form.ShowDialog();
-        }
-
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            dgvStock.ClearSelection();
-            string searchValue = tbSearch.Text;
-            dgvStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;      
-            if(searchValue!=null)
-            {
-                try
-                {
-                    foreach (DataGridViewRow row in dgvStock.Rows)
-                    {
-                        if ((row.Cells[0].Value.ToString().Equals(searchValue))||(row.Cells[1].Value.ToString().Equals(searchValue))||(row.Cells[2].Value.ToString().Equals(searchValue)))
-                        {
-                            row.Selected = true;                             
-                        }
-                    }
-                }
-                catch
-                {
-                }           
-             }
-        }
-
-
-        private void PopulateDataGridView()
+        // sets up the gridviews headers and buttons
+        private void InitializeGrid()
         {
             // column header text
-            dgvStock.Columns[0].HeaderText = "Item ID";
-            dgvStock.Columns[1].HeaderText = "Item Name";
-            dgvStock.Columns[2].HeaderText = "Brand";
-            dgvStock.Columns[3].HeaderText = "Stock Remaining";
-            dgvStock.Columns[4].HeaderText = "Amount Sold";
-            // populate table data
-            //this query updates the gui with everythig in the data base
-            //may be more simple way to do this with datagridview??
-            dbconnect.Init();
-            MySqlCommand cmd = new MySqlCommand("SELECT id,ProductName,brand,stockRemaining, stockSold FROM table1", dbconnect.handle);
-            var reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                string[] row0 = {
-                    reader.GetInt32(0).ToString(),  reader.GetString(1),  reader.GetString(2).ToString(),
-                    reader.GetInt32(3).ToString(),  reader.GetInt32(4).ToString()
-                };
-                this.dgvStock.Rows.Add(row0);
-            }
-            reader.Close();
-            // create edit buttons for table columns
+            dgvStock.ColumnCount = 6;
+            dgvStock.Columns[0].HeaderText = "Order ID";
+            dgvStock.Columns[1].HeaderText = "Item ID";
+            dgvStock.Columns[2].HeaderText = "Item Name";
+            dgvStock.Columns[3].HeaderText = "Brand";
+            dgvStock.Columns[4].HeaderText = "Category";
+            dgvStock.Columns[5].HeaderText = "Stock Sold";
+
+            // create edit buttons for table column
             DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
             editButtonColumn.Name = "Edit Item";
             editButtonColumn.Text = "Edit";
             editButtonColumn.UseColumnTextForButtonValue = true;
-            int columnIndex = 5;
+            int columnIndex = 6;
             if (dgvStock.Columns["Edit Item"] == null)
             {
                 dgvStock.Columns.Insert(columnIndex, editButtonColumn);
@@ -110,18 +55,116 @@ namespace SalesReportPredictionSystem
             dgvStock.CellClick += dgvStock_CellClick;
         }
 
-        // when an edit button is clicked
+        // loads data into the gridview
+        private void ReloadGrid()
+        {
+            // clears table
+            dgvStock.Rows.Clear();
+
+            // populate table data
+            // this query updates the gui with everything in the data base
+            // may be more simple way to do this with datagridview??
+            dbconnect.Init();
+            MySqlCommand cmd = new MySqlCommand("SELECT id,ProductName,brand,stockRemaining, stockSold FROM table1", dbconnect.handle);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string[] row0 = {
+                    reader.GetInt32(0).ToString(),  reader.GetString(1),  reader.GetString(2).ToString(),
+                    reader.GetInt32(3).ToString(),  reader.GetInt32(4).ToString(), "¯\\_(ツ)_/¯"
+                };
+                this.dgvStock.Rows.Add(row0);
+            }
+            reader.Close();            
+        }
+        
+
+        // load monthly form
+        private void btnMonthly_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            MonthlyForm form = new MonthlyForm();
+            form.ShowDialog();
+            this.Show();
+        }
+
+        // load weekly form
+        private void btnWeekly_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            WeeklyForm form = new WeeklyForm();
+            form.ShowDialog();
+            this.Show();
+        }
+
+        // add row to database
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            AddForm form = new AddForm();
+            form.ShowDialog();
+        }
+
+        // reloads the data ito the gridview
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            ReloadGrid();
+        }
+
+        // search function
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            string searchValue = tbSearch.Text;
+            bool found = false; 
+
+            dgvStock.ClearSelection();
+            dgvStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;    
+            
+            if(searchValue!=null)
+            {
+                try
+                {
+                    foreach (DataGridViewRow row in dgvStock.Rows)
+                    {
+                        if ((row.Cells[2].Value.ToString().Equals(searchValue))
+                            ||(row.Cells[3].Value.ToString().Equals(searchValue))
+                            ||(row.Cells[4].Value.ToString().Equals(searchValue))
+                            )
+                        {
+                            row.Selected = true;
+                            found = true;
+                        }
+                    }
+                }
+                catch
+                {
+                    
+                }
+
+                // displays error message when nothing found
+                if (found == false)
+                {
+                    string message = "Could not find " + searchValue + ".";
+                    string caption = "Error";
+                    MessageBox.Show(message, caption);
+                }
+             }
+        }
+
+        // edit button
+        // gets data from row and loads edit form
         private void dgvStock_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            string orderProduct, orderBrand, orderCategory, orderSold;
             if (e.ColumnIndex == dgvStock.Columns["Edit Item"].Index)
-            {
-                // TEST
-                // sets the date lable to the row clicked
-                lblDate.Text = e.RowIndex.ToString();               
-                //this.Hide();
+            {           
                 //find the prodcut id of current row
-                int i = int.Parse(this.dgvStock.Rows[e.RowIndex].Cells[0].Value.ToString());
-                EditForm form = new EditForm(i);
+                int orderId = int.Parse(this.dgvStock.Rows[e.RowIndex].Cells[0].Value.ToString());
+                orderProduct = dgvStock.Rows[e.RowIndex].Cells[2].Value.ToString();
+                orderBrand = dgvStock.Rows[e.RowIndex].Cells[3].Value.ToString();
+                orderCategory = dgvStock.Rows[e.RowIndex].Cells[4].Value.ToString();
+                orderSold = dgvStock.Rows[e.RowIndex].Cells[5].Value.ToString();
+
+                EditForm form = new EditForm(orderId, orderProduct, orderBrand, orderCategory, orderSold);
                 form.ShowDialog();
             }
         }

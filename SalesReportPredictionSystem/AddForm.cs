@@ -19,16 +19,35 @@ namespace SalesReportPredictionSystem
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            MainForm form = new MainForm();
-            form.ShowDialog();
+            AddRow();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            MainForm form = new MainForm();
-            form.ShowDialog();
+            this.Close();
+        }
+
+        private void AddForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddRow()
+        {
+            // checks for no empty textboxes
+            if (!(tbName.Text == "") && !(tbBrand.Text == "") && !(tbCategory.Text == "") && !(tbSold.Text == ""))
+            {
+                // TODO:
+                // add query to add table rows
+                this.Close();
+            }
+            else
+            {
+                // error messagebox
+                string caption = "Error";
+                string message = "Some of the text fields have been left empty.";
+                DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.OK);
+            }
         }
     }
 }

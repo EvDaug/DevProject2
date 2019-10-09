@@ -43,7 +43,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(1273, 100);
+            this.btnSearch.Location = new System.Drawing.Point(1070, 100);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(67, 46);
             this.btnSearch.TabIndex = 13;
@@ -74,7 +74,7 @@
             // 
             // tbSearch
             // 
-            this.tbSearch.Location = new System.Drawing.Point(1074, 108);
+            this.tbSearch.Location = new System.Drawing.Point(871, 108);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(193, 31);
             this.tbSearch.TabIndex = 12;
@@ -82,6 +82,8 @@
             // 
             // dgvStock
             // 
+            this.dgvStock.AllowUserToAddRows = false;
+            this.dgvStock.AllowUserToDeleteRows = false;
             this.dgvStock.AllowUserToResizeColumns = false;
             this.dgvStock.AllowUserToResizeRows = false;
             this.dgvStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -93,7 +95,7 @@
             this.dgvStock.Location = new System.Drawing.Point(50, 142);
             this.dgvStock.Name = "dgvStock";
             this.dgvStock.ReadOnly = true;
-            this.dgvStock.Size = new System.Drawing.Size(1290, 350);
+            this.dgvStock.Size = new System.Drawing.Size(1087, 350);
             this.dgvStock.TabIndex = 15;
             this.dgvStock.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -127,7 +129,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(1374, 629);
+            this.ClientSize = new System.Drawing.Size(1224, 629);
             this.Controls.Add(this.dgvStock);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.tbSearch);

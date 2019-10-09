@@ -31,14 +31,12 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lblHeading = new System.Windows.Forms.Label();
-            this.lblStock = new System.Windows.Forms.Label();
+            this.lblCategory = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
-            this.lblID = new System.Windows.Forms.Label();
             this.lblSold = new System.Windows.Forms.Label();
             this.lblBrand = new System.Windows.Forms.Label();
-            this.tbID = new System.Windows.Forms.TextBox();
             this.tbSold = new System.Windows.Forms.TextBox();
-            this.tbStock = new System.Windows.Forms.TextBox();
+            this.tbCategory = new System.Windows.Forms.TextBox();
             this.tbBrand = new System.Windows.Forms.TextBox();
             this.tbName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -73,14 +71,14 @@
             this.lblHeading.TabIndex = 23;
             this.lblHeading.Text = "Add Item";
             // 
-            // lblStock
+            // lblCategory
             // 
-            this.lblStock.AutoSize = true;
-            this.lblStock.Location = new System.Drawing.Point(151, 238);
-            this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(143, 25);
-            this.lblStock.TabIndex = 22;
-            this.lblStock.Text = "Current Stock";
+            this.lblCategory.AutoSize = true;
+            this.lblCategory.Location = new System.Drawing.Point(194, 238);
+            this.lblCategory.Name = "lblCategory";
+            this.lblCategory.Size = new System.Drawing.Size(99, 25);
+            this.lblCategory.TabIndex = 22;
+            this.lblCategory.Text = "Category";
             // 
             // lblName
             // 
@@ -91,23 +89,14 @@
             this.lblName.TabIndex = 21;
             this.lblName.Text = "Name";
             // 
-            // lblID
-            // 
-            this.lblID.AutoSize = true;
-            this.lblID.Location = new System.Drawing.Point(262, 127);
-            this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(32, 25);
-            this.lblID.TabIndex = 20;
-            this.lblID.Text = "ID";
-            // 
             // lblSold
             // 
             this.lblSold.AutoSize = true;
-            this.lblSold.Location = new System.Drawing.Point(239, 275);
+            this.lblSold.Location = new System.Drawing.Point(179, 275);
             this.lblSold.Name = "lblSold";
-            this.lblSold.Size = new System.Drawing.Size(55, 25);
+            this.lblSold.Size = new System.Drawing.Size(115, 25);
             this.lblSold.TabIndex = 19;
-            this.lblSold.Text = "Sold";
+            this.lblSold.Text = "Stock Sold";
             // 
             // lblBrand
             // 
@@ -118,13 +107,6 @@
             this.lblBrand.TabIndex = 18;
             this.lblBrand.Text = "Brand";
             // 
-            // tbID
-            // 
-            this.tbID.Location = new System.Drawing.Point(300, 124);
-            this.tbID.Name = "tbID";
-            this.tbID.Size = new System.Drawing.Size(300, 31);
-            this.tbID.TabIndex = 17;
-            // 
             // tbSold
             // 
             this.tbSold.Location = new System.Drawing.Point(300, 272);
@@ -132,12 +114,12 @@
             this.tbSold.Size = new System.Drawing.Size(300, 31);
             this.tbSold.TabIndex = 16;
             // 
-            // tbStock
+            // tbCategory
             // 
-            this.tbStock.Location = new System.Drawing.Point(300, 235);
-            this.tbStock.Name = "tbStock";
-            this.tbStock.Size = new System.Drawing.Size(300, 31);
-            this.tbStock.TabIndex = 15;
+            this.tbCategory.Location = new System.Drawing.Point(300, 235);
+            this.tbCategory.Name = "tbCategory";
+            this.tbCategory.Size = new System.Drawing.Size(300, 31);
+            this.tbCategory.TabIndex = 15;
             // 
             // tbBrand
             // 
@@ -161,18 +143,17 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.lblHeading);
-            this.Controls.Add(this.lblStock);
+            this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.lblName);
-            this.Controls.Add(this.lblID);
             this.Controls.Add(this.lblSold);
             this.Controls.Add(this.lblBrand);
-            this.Controls.Add(this.tbID);
             this.Controls.Add(this.tbSold);
-            this.Controls.Add(this.tbStock);
+            this.Controls.Add(this.tbCategory);
             this.Controls.Add(this.tbBrand);
             this.Controls.Add(this.tbName);
             this.Name = "AddForm";
             this.Text = "Sales Prediction Report System";
+            this.Load += new System.EventHandler(this.AddForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,14 +164,12 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label lblHeading;
-        private System.Windows.Forms.Label lblStock;
+        private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblSold;
         private System.Windows.Forms.Label lblBrand;
-        private System.Windows.Forms.TextBox tbID;
         private System.Windows.Forms.TextBox tbSold;
-        private System.Windows.Forms.TextBox tbStock;
+        private System.Windows.Forms.TextBox tbCategory;
         private System.Windows.Forms.TextBox tbBrand;
         private System.Windows.Forms.TextBox tbName;
     }

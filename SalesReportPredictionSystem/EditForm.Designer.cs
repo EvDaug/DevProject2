@@ -42,98 +42,85 @@ namespace SalesReportPredictionSystem
         {
             this.tbName = new System.Windows.Forms.TextBox();
             this.tbBrand = new System.Windows.Forms.TextBox();
-            this.tbStock = new System.Windows.Forms.TextBox();
+            this.tbCategory = new System.Windows.Forms.TextBox();
             this.tbSold = new System.Windows.Forms.TextBox();
-            this.tbID = new System.Windows.Forms.TextBox();
             this.lblBrand = new System.Windows.Forms.Label();
             this.lblSold = new System.Windows.Forms.Label();
-            this.lblID = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
-            this.lblStock = new System.Windows.Forms.Label();
+            this.lblCategory = new System.Windows.Forms.Label();
             this.lblHeading = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbName
             // 
-            this.tbName.Location = new System.Drawing.Point(299, 161);
+            this.tbName.Location = new System.Drawing.Point(299, 141);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(300, 31);
             this.tbName.TabIndex = 0;
             // 
             // tbBrand
             // 
-            this.tbBrand.Location = new System.Drawing.Point(299, 198);
+            this.tbBrand.Location = new System.Drawing.Point(299, 178);
             this.tbBrand.Name = "tbBrand";
             this.tbBrand.Size = new System.Drawing.Size(300, 31);
             this.tbBrand.TabIndex = 1;
             // 
-            // tbStock
+            // tbCategory
             // 
-            this.tbStock.Location = new System.Drawing.Point(299, 235);
-            this.tbStock.Name = "tbStock";
-            this.tbStock.Size = new System.Drawing.Size(300, 31);
-            this.tbStock.TabIndex = 2;
+            this.tbCategory.Location = new System.Drawing.Point(299, 215);
+            this.tbCategory.Name = "tbCategory";
+            this.tbCategory.Size = new System.Drawing.Size(300, 31);
+            this.tbCategory.TabIndex = 2;
             // 
             // tbSold
             // 
-            this.tbSold.Location = new System.Drawing.Point(299, 272);
+            this.tbSold.Location = new System.Drawing.Point(299, 252);
             this.tbSold.Name = "tbSold";
             this.tbSold.Size = new System.Drawing.Size(300, 31);
             this.tbSold.TabIndex = 3;
             // 
-            // tbID
-            // 
-            this.tbID.Location = new System.Drawing.Point(299, 124);
-            this.tbID.Name = "tbID";
-            this.tbID.Size = new System.Drawing.Size(300, 31);
-            this.tbID.TabIndex = 4;
-            // 
             // lblBrand
             // 
             this.lblBrand.AutoSize = true;
-            this.lblBrand.Location = new System.Drawing.Point(224, 201);
+            this.lblBrand.Location = new System.Drawing.Point(224, 181);
             this.lblBrand.Name = "lblBrand";
             this.lblBrand.Size = new System.Drawing.Size(69, 25);
             this.lblBrand.TabIndex = 5;
             this.lblBrand.Text = "Brand";
+            this.lblBrand.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblSold
             // 
             this.lblSold.AutoSize = true;
-            this.lblSold.Location = new System.Drawing.Point(238, 275);
+            this.lblSold.Location = new System.Drawing.Point(178, 255);
             this.lblSold.Name = "lblSold";
-            this.lblSold.Size = new System.Drawing.Size(55, 25);
+            this.lblSold.Size = new System.Drawing.Size(115, 25);
             this.lblSold.TabIndex = 6;
-            this.lblSold.Text = "Sold";
-            // 
-            // lblID
-            // 
-            this.lblID.AutoSize = true;
-            this.lblID.Location = new System.Drawing.Point(261, 127);
-            this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(32, 25);
-            this.lblID.TabIndex = 7;
-            this.lblID.Text = "ID";
+            this.lblSold.Text = "Stock Sold";
+            this.lblSold.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(224, 164);
+            this.lblName.Location = new System.Drawing.Point(224, 144);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(68, 25);
             this.lblName.TabIndex = 8;
             this.lblName.Text = "Name";
+            this.lblName.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // lblStock
+            // lblCategory
             // 
-            this.lblStock.AutoSize = true;
-            this.lblStock.Location = new System.Drawing.Point(150, 238);
-            this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(143, 25);
-            this.lblStock.TabIndex = 9;
-            this.lblStock.Text = "Current Stock";
+            this.lblCategory.AutoSize = true;
+            this.lblCategory.Location = new System.Drawing.Point(193, 218);
+            this.lblCategory.Name = "lblCategory";
+            this.lblCategory.Size = new System.Drawing.Size(99, 25);
+            this.lblCategory.TabIndex = 9;
+            this.lblCategory.Text = "Category";
+            this.lblCategory.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblHeading
             // 
@@ -153,7 +140,7 @@ namespace SalesReportPredictionSystem
             this.btnUpdate.TabIndex = 11;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
-           this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnCancel
             // 
@@ -165,22 +152,31 @@ namespace SalesReportPredictionSystem
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(35, 373);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(131, 45);
+            this.btnDelete.TabIndex = 13;
+            this.btnDelete.Text = "Delete Item";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // EditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.lblHeading);
-            this.Controls.Add(this.lblStock);
+            this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.lblName);
-            this.Controls.Add(this.lblID);
             this.Controls.Add(this.lblSold);
             this.Controls.Add(this.lblBrand);
-            this.Controls.Add(this.tbID);
             this.Controls.Add(this.tbSold);
-            this.Controls.Add(this.tbStock);
+            this.Controls.Add(this.tbCategory);
             this.Controls.Add(this.tbBrand);
             this.Controls.Add(this.tbName);
             this.Name = "EditForm";
@@ -195,16 +191,15 @@ namespace SalesReportPredictionSystem
 
         private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.TextBox tbBrand;
-        private System.Windows.Forms.TextBox tbStock;
+        private System.Windows.Forms.TextBox tbCategory;
         private System.Windows.Forms.TextBox tbSold;
-        private System.Windows.Forms.TextBox tbID;
         private System.Windows.Forms.Label lblBrand;
         private System.Windows.Forms.Label lblSold;
-        private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblStock;
+        private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.Label lblHeading;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

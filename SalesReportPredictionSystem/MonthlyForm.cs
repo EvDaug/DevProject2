@@ -15,25 +15,25 @@ namespace SalesReportPredictionSystem
         public MonthlyForm()
         {
             InitializeComponent();
-            PopulateDataGridView();
+            RefreshTable();
         }
 
+        // return to main page
         private void btnBack_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            MainForm form = new MainForm();
-            form.ShowDialog();
+            this.Close();
         }
 
         private void MonthlyForm_Load(object sender, EventArgs e)
         {
             // fix window size
-            this.MinimumSize = new System.Drawing.Size(this.Width + 80, this.Height);
+            this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
-        private void PopulateDataGridView()
+        // loads infomation into table
+        private void RefreshTable()
         {
             dgvStock.Columns[0].HeaderText = "Item ID";
             dgvStock.Columns[1].HeaderText = "Item Name";
