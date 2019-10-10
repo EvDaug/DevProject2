@@ -17,6 +17,8 @@ namespace SalesReportPredictionSystem
         public MainForm()
         {
             InitializeComponent();
+            InitializeGrid();
+            ReloadGrid();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,9 +27,6 @@ namespace SalesReportPredictionSystem
             this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            InitializeGrid();
-            ReloadGrid();
         }
 
         // sets up the gridviews headers and buttons
@@ -60,9 +59,29 @@ namespace SalesReportPredictionSystem
             if (Database.Connected)
                 return;
 
-            Database.Init();
+            bool retry = false;
+            try
+            {
+                Database.Init();
+            }
+            catch (MySqlException ex)
+            {
+                Database.handle = null;
+                var result = Database.ShowError(ex);
+
+                if (result == DialogResult.Yes)
+                {
+                    var prompt = new ConnectionForm();
+                    prompt.ShowDialog(this);
+                    retry = prompt.DialogResult == DialogResult.Retry;
+                }
+            }
+
+            if (retry)
+                ReloadDB();
+
             if (!Database.Connected)
-                Application.Exit();
+                Environment.Exit(0); // Exits the program
         }
 
         // loads data into the gridview
