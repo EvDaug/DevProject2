@@ -55,6 +55,16 @@ namespace SalesReportPredictionSystem
             dgvStock.CellClick += dgvStock_CellClick;
         }
 
+        private void ReloadDB()
+        {
+            if (Database.Connected)
+                return;
+
+            Database.Init();
+            if (!Database.Connected)
+                Application.Exit();
+        }
+
         // loads data into the gridview
         private void ReloadGrid()
         {
@@ -64,8 +74,8 @@ namespace SalesReportPredictionSystem
             // populate table data
             // this query updates the gui with everything in the data base
             // may be more simple way to do this with datagridview??
-            dbconnect.Init();
-            MySqlCommand cmd = new MySqlCommand("SELECT id,ProductName,brand,stockRemaining, stockSold FROM table1", dbconnect.handle);
+            ReloadDB();
+            MySqlCommand cmd = new MySqlCommand("SELECT id,ProductName,brand,stockRemaining, stockSold FROM table1", Database.handle);
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {

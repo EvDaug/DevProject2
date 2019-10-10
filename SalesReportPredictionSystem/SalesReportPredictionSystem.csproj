@@ -79,7 +79,7 @@
     <Compile Include="AddForm.Designer.cs">
       <DependentUpon>AddForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="dbconnect.cs" />
+    <Compile Include="Database.cs" />
     <Compile Include="EditForm.cs">
       <SubType>Form</SubType>
     </Compile>

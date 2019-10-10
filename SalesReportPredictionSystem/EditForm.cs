@@ -64,7 +64,7 @@ namespace SalesReportPredictionSystem
                 /*
                 // this query updates the database with text input
                 String query = "UPDATE table1 SET id=" + tbID.Text + ",ProductName=\'" + tbName.Text + "\',brand=\'" + tbBrand.Text + "\',stockRemaining=" + tbStock.Text + ", stockSold=" + tbSold.Text + " WHERE id="+id;
-                MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+                MySqlCommand cmd = new MySqlCommand(query, Database.handle);
                 cmd.ExecuteNonQuery();
                 this.Close();
                 */
