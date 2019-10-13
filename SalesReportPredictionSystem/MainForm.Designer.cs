@@ -79,6 +79,7 @@ namespace SalesReportPredictionSystem
             this.btnReport.TabIndex = 2;
             this.btnReport.Text = "Generate CSV Report";
             this.btnReport.UseVisualStyleBackColor = false;
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
             // dgvStock
             // 

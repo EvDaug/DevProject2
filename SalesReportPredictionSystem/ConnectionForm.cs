@@ -23,6 +23,7 @@ namespace SalesReportPredictionSystem
         public ConnectionForm()
         {
             this.Size = new Size(256, 230);
+            this.StartPosition = FormStartPosition.CenterScreen;
 
             serverLabel = new Label();
             serverLabel.Text = "Server:";
