@@ -168,5 +168,24 @@ namespace SalesReportPredictionSystem
                 form.ShowDialog();
             }
         }
+
+        // Gets new date, when the date has changed
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+            int day = dtpDate.Value.Day;
+            int month = dtpDate.Value.Month;
+            string dateString = dtpDate.Value.ToShortDateString();
+
+
+            if (dtpDate.Value.Date == DateTime.Now.Date)
+            {
+                // code for when today is selected
+                lblDate.Text = "Current sales";
+            }
+            else
+            {
+                lblDate.Text = day + "/" + month;
+            }
+        }
     }
 }
