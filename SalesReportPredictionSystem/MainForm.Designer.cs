@@ -30,8 +30,6 @@ namespace SalesReportPredictionSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnMonthly = new System.Windows.Forms.Button();
-            this.btnWeekly = new System.Windows.Forms.Button();
             this.btnReport = new System.Windows.Forms.Button();
             this.dgvStock = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,36 +43,14 @@ namespace SalesReportPredictionSystem
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
+            this.cbMonthly = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnMonthly
-            // 
-            this.btnMonthly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnMonthly.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnMonthly.Location = new System.Drawing.Point(962, 550);
-            this.btnMonthly.Name = "btnMonthly";
-            this.btnMonthly.Size = new System.Drawing.Size(881, 66);
-            this.btnMonthly.TabIndex = 0;
-            this.btnMonthly.Text = "View Monthly Sales";
-            this.btnMonthly.UseVisualStyleBackColor = false;
-            this.btnMonthly.Click += new System.EventHandler(this.btnMonthly_Click);
-            // 
-            // btnWeekly
-            // 
-            this.btnWeekly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnWeekly.Location = new System.Drawing.Point(58, 550);
-            this.btnWeekly.Name = "btnWeekly";
-            this.btnWeekly.Size = new System.Drawing.Size(881, 66);
-            this.btnWeekly.TabIndex = 1;
-            this.btnWeekly.Text = "View Weekly Sales";
-            this.btnWeekly.UseVisualStyleBackColor = false;
-            this.btnWeekly.Click += new System.EventHandler(this.btnWeekly_Click);
             // 
             // btnReport
             // 
             this.btnReport.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnReport.Location = new System.Drawing.Point(58, 623);
+            this.btnReport.Location = new System.Drawing.Point(58, 535);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(881, 66);
             this.btnReport.TabIndex = 2;
@@ -158,7 +134,7 @@ namespace SalesReportPredictionSystem
             // btnAdd
             // 
             this.btnAdd.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnAdd.Location = new System.Drawing.Point(962, 623);
+            this.btnAdd.Location = new System.Drawing.Point(962, 535);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(881, 66);
             this.btnAdd.TabIndex = 7;
@@ -168,7 +144,7 @@ namespace SalesReportPredictionSystem
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(1309, 39);
+            this.btnRefresh.Location = new System.Drawing.Point(1352, 40);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(159, 53);
             this.btnRefresh.TabIndex = 8;
@@ -179,19 +155,32 @@ namespace SalesReportPredictionSystem
             // dtpDate
             // 
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDate.Location = new System.Drawing.Point(935, 47);
+            this.dtpDate.Location = new System.Drawing.Point(739, 48);
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(200, 35);
             this.dtpDate.TabIndex = 9;
             this.dtpDate.Value = new System.DateTime(2019, 10, 17, 11, 17, 36, 0);
             this.dtpDate.ValueChanged += new System.EventHandler(this.dtpDate_ValueChanged);
             // 
+            // cbMonthly
+            // 
+            this.cbMonthly.AutoSize = true;
+            this.cbMonthly.ForeColor = System.Drawing.SystemColors.Control;
+            this.cbMonthly.Location = new System.Drawing.Point(962, 48);
+            this.cbMonthly.Name = "cbMonthly";
+            this.cbMonthly.Size = new System.Drawing.Size(187, 33);
+            this.cbMonthly.TabIndex = 10;
+            this.cbMonthly.Text = "Monthly View";
+            this.cbMonthly.UseVisualStyleBackColor = true;
+            this.cbMonthly.CheckedChanged += new System.EventHandler(this.cbMonthly_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(1953, 730);
+            this.ClientSize = new System.Drawing.Size(1953, 630);
+            this.Controls.Add(this.cbMonthly);
             this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnAdd);
@@ -200,8 +189,6 @@ namespace SalesReportPredictionSystem
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.dgvStock);
             this.Controls.Add(this.btnReport);
-            this.Controls.Add(this.btnWeekly);
-            this.Controls.Add(this.btnMonthly);
             this.Name = "MainForm";
             this.Text = "Sales Prediction Report System";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -212,9 +199,6 @@ namespace SalesReportPredictionSystem
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnMonthly;
-        private System.Windows.Forms.Button btnWeekly;
         private System.Windows.Forms.Button btnReport;
         //clean up public ->
         public System.Windows.Forms.DataGridView dgvStock;
@@ -230,6 +214,7 @@ namespace SalesReportPredictionSystem
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private Button btnRefresh;
         private DateTimePicker dtpDate;
+        private CheckBox cbMonthly;
     }
      
 }

@@ -169,22 +169,46 @@ namespace SalesReportPredictionSystem
             }
         }
 
-        // Gets new date, when the date has changed
+        // calls for new query when date value has canged
         private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+            TableQuery();
+        }
+
+        // calls for new query to switch between monthly and weekly sales
+        private void cbMonthly_CheckedChanged(object sender, EventArgs e)
+        {
+            TableQuery();
+        }
+
+        // if checkbox or datepicker changed, updates table with new query
+        private void TableQuery()
         {
             int day = dtpDate.Value.Day;
             int month = dtpDate.Value.Month;
-            string dateString = dtpDate.Value.ToShortDateString();
+            bool showMonthly = cbMonthly.Checked;
 
-
-            if (dtpDate.Value.Date == DateTime.Now.Date)
+            // if selected ahead of time, no records will exist. Get taken back to todays date
+            if (dtpDate.Value.Date >= DateTime.Now.Date)
             {
-                // code for when today is selected
+                // show current sales
                 lblDate.Text = "Current sales";
+                dtpDate.Value = DateTime.Now.Date;
             }
             else
             {
-                lblDate.Text = day + "/" + month;
+                // check if checkbox is selected
+                if (showMonthly)
+                {
+                    // show monthly sales
+                    lblDate.Text = "Sales of month: " + month;
+                }
+                else
+                {
+                    // show weekly sales
+                    lblDate.Text = "Sales of week: " + day + "/" + month;
+
+                }
             }
         }
     }
