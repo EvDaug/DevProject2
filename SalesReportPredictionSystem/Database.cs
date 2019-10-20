@@ -8,14 +8,13 @@ namespace SalesReportPredictionSystem
     {
         public static MySqlConnection handle;
         public static bool Connected { get { return handle != null; } }
+        public static readonly string DefaultColumns = "Order_No,id,item_name,brand_name,category,sale_datetime";
 
         public static string ServerName = "localhost";
-        public static string DBName = "big_pharma";
-        public static string UserID = "test";
+        public static string DBName = "php_sales";
+        public static string UserID = "root";
         public static string Password = null;
         public static bool UsePwd = false;
-
-        public static readonly string DefaultColumns = "Order_No,id,item_name,brand_name,category,sale_datetime";
 
         private static string ConnString
         {

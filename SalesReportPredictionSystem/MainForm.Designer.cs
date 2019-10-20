@@ -32,6 +32,7 @@ namespace SalesReportPredictionSystem
         {
             
             this.btnReport = new System.Windows.Forms.Button();
+            this.btnReportWeekly = new System.Windows.Forms.Button();
             this.dgvStock = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,9 +58,21 @@ namespace SalesReportPredictionSystem
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(755, 57);
             this.btnReport.TabIndex = 2;
-            this.btnReport.Text = "Generate CSV Report";
+            this.btnReport.Text = "Generate Monthly CSV Prediction";
             this.btnReport.UseVisualStyleBackColor = false;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
+            // 
+            // 
+            // btnReportWeekly
+            // 
+            this.btnReportWeekly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.btnReportWeekly.Location = new System.Drawing.Point(825, 537);
+            this.btnReportWeekly.Name = "btnReportWeekly";
+            this.btnReportWeekly.Size = new System.Drawing.Size(755, 57);
+            this.btnReportWeekly.TabIndex = 7;
+            this.btnReportWeekly.Text = "Generate Weekly CSV Prediction";
+            this.btnReportWeekly.UseVisualStyleBackColor = false;
+            this.btnReportWeekly.Click += new System.EventHandler(this.btnReportWeekly_Click);
             // 
             // dgvStock
             // 
@@ -74,7 +87,7 @@ namespace SalesReportPredictionSystem
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5});
-            this.dgvStock.Location = new System.Drawing.Point(50, 100);
+            this.dgvStock.Location = new System.Drawing.Point(50, 87);
             this.dgvStock.Name = "dgvStock";
             this.dgvStock.ReadOnly = true;
             this.dgvStock.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -115,7 +128,7 @@ namespace SalesReportPredictionSystem
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(112, 46);
             this.lblDate.TabIndex = 4;
-            this.lblDate.Text = "Date";
+            this.lblDate.Text = "Current Sales";
             // 
             // tbSearch
             // 
@@ -138,10 +151,10 @@ namespace SalesReportPredictionSystem
             // btnAdd
             // 
             this.btnAdd.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnAdd.Location = new System.Drawing.Point(825, 537);
+            this.btnAdd.Location = new System.Drawing.Point(1200, 450);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(755, 57);
-            this.btnAdd.TabIndex = 7;
+            this.btnAdd.Size = new System.Drawing.Size(350, 57);
+            this.btnAdd.TabIndex = 12;
             this.btnAdd.Text = "Add Item";
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -169,7 +182,6 @@ namespace SalesReportPredictionSystem
             // rbMonthly
             // 
             this.rbMonthly.AutoSize = true;
-            //this.rbMonthly.ForeColor = System.Drawing.SystemColors.Control;
             this.rbMonthly.Location = new System.Drawing.Point(700, 20);
             this.rbMonthly.Name = "rbMonthly";
             this.rbMonthly.TabIndex = 10;
@@ -188,15 +200,13 @@ namespace SalesReportPredictionSystem
             this.rbWeekly.UseVisualStyleBackColor = true;
             this.rbWeekly.CheckedChanged += new System.EventHandler(this.rbWeekly_CheckedChanged);
             // 
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.Size = new System.Drawing.Size(1640, 660);
-            this.Controls.Add(this.rbMonthly);
-            this.Controls.Add(this.rbWeekly);
-            this.Controls.Add(this.dtpDate);
+            this.ClientSize = new System.Drawing.Size(1674, 629);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnSearch);
@@ -204,10 +214,14 @@ namespace SalesReportPredictionSystem
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.dgvStock);
             this.Controls.Add(this.btnReport);
-           
+            this.Controls.Add(this.rbMonthly);
+            this.Controls.Add(this.rbWeekly);
+            this.Controls.Add(this.dtpDate);
+            this.Controls.Add(this.btnReportWeekly);
+
             this.Name = "MainForm";
             this.Text = "Sales Prediction Report System";
-            //this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -218,7 +232,7 @@ namespace SalesReportPredictionSystem
 
        
         private System.Windows.Forms.Button btnReport;
-        //clean up public ->
+        private System.Windows.Forms.Button btnReportWeekly;
         public System.Windows.Forms.DataGridView dgvStock;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.TextBox tbSearch;
@@ -230,10 +244,10 @@ namespace SalesReportPredictionSystem
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.RadioButton rbMonthly;
         private System.Windows.Forms.RadioButton rbWeekly;
+        private Button btnRefresh;
     }
      
 }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using CsvHelper;
+using System.Collections.Generic;
 
 namespace SalesReportPredictionSystem
 {
@@ -11,11 +12,10 @@ namespace SalesReportPredictionSystem
         public MainForm()
         {
             InitializeComponent();
-            InitializeTables();
             InitializeGrid();
             ReloadGrid();
         }
-        /*
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // fix window size
@@ -23,15 +23,8 @@ namespace SalesReportPredictionSystem
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
-        */
-        private void InitializeTables()
-        {
-            /*
-            _salesTbl = new DataTable();
-            // initialise _salesTbl
-            this.dgvStock.DataSource = _salesTbl;
-            */
-        }
+
+        
 
         // sets up the gridviews headers and buttons
         private void InitializeGrid()
@@ -59,7 +52,6 @@ namespace SalesReportPredictionSystem
             }
             dgvStock.CellClick += dgvStock_CellClick;
         }
-
         private void ReloadDB()
         {
             if (Database.Connected)
@@ -89,7 +81,6 @@ namespace SalesReportPredictionSystem
             if (!Database.Connected)
                 Environment.Exit(0); // Exits the program
         }
-
         // loads data into the gridview
         private void ReloadGrid(string queryStr)
         {
@@ -114,7 +105,7 @@ namespace SalesReportPredictionSystem
                 this.dgvStock.Rows.Add(row);
 
             }
-            reader.Close();            
+            reader.Close();
         }
 
         private void ReloadGrid()
@@ -122,17 +113,57 @@ namespace SalesReportPredictionSystem
             ReloadGrid("SELECT " + Database.DefaultColumns + " FROM current_sales");
         }
 
-        private void btnReport_Click(object sender, EventArgs e)
+        private int Countstock(string id)
         {
-            ReloadDB();
 
+            MySqlCommand cmd = new MySqlCommand("SELECT id,COUNT(*) FROM current_sales GROUP BY id;", Database.handle);
+            Dictionary<string, int> dictionary = new Dictionary<string, int>();
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+
+                string[] row = new string[reader.FieldCount];
+                for (int i = 0; i < row.Length; i++)
+                    row[i] = reader[i].ToString();
+
+                dictionary.Add(row[0], Int32.Parse(row[1]));
+            }
+            reader.Close();
+            int value;
+            dictionary.TryGetValue(id, out value);
+            return value;
+        }
+        private void btnReportWeekly_Click(object sender, EventArgs e)
+        {
+            Prediciton(true);
+        }
+            private void btnReport_Click(object sender, EventArgs e)
+        {
+            Prediciton(false);
+        }
+        private void Prediciton(bool weekly) {
+            ReloadDB();
+            int stock;
+            String date = DateTime.Now.ToString("yyyy-MM-dd");
+            int d = DateTime.Now.Day;
+            int days = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            String firstDay;
+            if (!weekly)
+            {
+                firstDay = DateTime.Now.AddDays(-d).ToString("yyyy-MM-dd");
+                stock = 100;
+            }
+            else {
+                firstDay = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                stock = 25;
+            }
             // Show a 'Save File' dialog so that the user can pick a folder & filename
             var saveDlg = new SaveFileDialog();
             saveDlg.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
             if (saveDlg.ShowDialog() != DialogResult.OK)
                 return;
 
-            var cmd = new MySqlCommand("SELECT * FROM current_sales", Database.handle);
+            var cmd = new MySqlCommand("SELECT COUNT(*),id,item_name,brand_name,category FROM current_sales WHERE  sale_datetime >= '" + firstDay + "' AND sale_datetime <= '" + date + "' GROUP BY id", Database.handle);
             var reader = cmd.ExecuteReader();
 
             // Use that filename for CSV output directly from the MySql reader
@@ -153,8 +184,10 @@ namespace SalesReportPredictionSystem
                 // we use 'do-while' instead of 'while' since we've already called reader.Read() once
                 do
                 {
+                    int pred= stock - reader.GetInt32(0);
+                    csv.WriteField(pred.ToString());
                     // write the actual data for each column
-                    for (int i = 0; i < nCols; i++)
+                    for (int i = 1; i < nCols; i++)
                         csv.WriteField(reader[i]);
 
                     csv.NextRecord();
@@ -170,6 +203,8 @@ namespace SalesReportPredictionSystem
         {
             AddForm form = new AddForm();
             form.ShowDialog();
+            ReloadGrid();
+
         }
 
         // reloads the data ito the gridview
@@ -182,20 +217,20 @@ namespace SalesReportPredictionSystem
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string searchValue = tbSearch.Text;
-            bool found = false; 
+            bool found = false;
 
             dgvStock.ClearSelection();
-            dgvStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;    
-            
-            if(searchValue!=null)
+            dgvStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            if (searchValue != null)
             {
                 try
                 {
                     foreach (DataGridViewRow row in dgvStock.Rows)
                     {
                         if ((row.Cells[2].Value.ToString().Equals(searchValue))
-                            ||(row.Cells[3].Value.ToString().Equals(searchValue))
-                            ||(row.Cells[4].Value.ToString().Equals(searchValue))
+                            || (row.Cells[3].Value.ToString().Equals(searchValue))
+                            || (row.Cells[4].Value.ToString().Equals(searchValue))
                             )
                         {
                             row.Selected = true;
@@ -205,7 +240,7 @@ namespace SalesReportPredictionSystem
                 }
                 catch
                 {
-                    
+
                 }
 
                 // displays error message when nothing found
@@ -215,7 +250,7 @@ namespace SalesReportPredictionSystem
                     string caption = "Error";
                     MessageBox.Show(message, caption);
                 }
-             }
+            }
         }
 
         // edit button
@@ -224,7 +259,7 @@ namespace SalesReportPredictionSystem
         {
             string orderProduct, orderBrand, orderCategory, orderSold;
             if (e.ColumnIndex == dgvStock.Columns["Edit Item"].Index)
-            {           
+            {
                 //find the prodcut id of current row
                 int orderId = int.Parse(this.dgvStock.Rows[e.RowIndex].Cells[0].Value.ToString());
                 orderProduct = dgvStock.Rows[e.RowIndex].Cells[2].Value.ToString();
@@ -234,10 +269,10 @@ namespace SalesReportPredictionSystem
 
                 EditForm form = new EditForm(orderId, orderProduct, orderBrand, orderCategory, orderSold);
                 form.ShowDialog();
+                ReloadGrid();
+
             }
         }
-
-        // calls for new query when date value has canged
         private void dtpDate_ValueChanged(object sender, EventArgs e)
         {
             RefreshSales();
@@ -301,7 +336,7 @@ namespace SalesReportPredictionSystem
             string queryStr = "SELECT " + Database.DefaultColumns + " FROM current_sales " +
                               "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'";
 
-            ReloadGrid(queryStr);            
+            ReloadGrid(queryStr);
 
             // check if checkbox is selected
             if (rbMonthly.Checked)
@@ -317,3 +352,4 @@ namespace SalesReportPredictionSystem
         }
     }
 }
+
