@@ -15,6 +15,8 @@ namespace SalesReportPredictionSystem
         public static string Password = null;
         public static bool UsePwd = false;
 
+        public static readonly string DefaultColumns = "Order_No,id,item_name,brand_name,category,sale_datetime";
+
         private static string ConnString
         {
             get {

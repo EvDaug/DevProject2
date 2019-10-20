@@ -91,7 +91,7 @@ namespace SalesReportPredictionSystem
         }
 
         // loads data into the gridview
-        private void ReloadGrid()
+        private void ReloadGrid(string queryStr)
         {
             // clears table
             dgvStock.Rows.Clear();
@@ -101,7 +101,7 @@ namespace SalesReportPredictionSystem
             // may be more simple way to do this with datagridview??
 
             ReloadDB();
-            MySqlCommand cmd = new MySqlCommand("SELECT Order_No,id,item_name,brand_name,category,sale_datetime FROM current_sales", Database.handle);
+            MySqlCommand cmd = new MySqlCommand(queryStr, Database.handle);
 
             var reader = cmd.ExecuteReader();
 
@@ -116,7 +116,12 @@ namespace SalesReportPredictionSystem
             }
             reader.Close();            
         }
-        
+
+        private void ReloadGrid()
+        {
+            ReloadGrid("SELECT " + Database.DefaultColumns + " FROM current_sales");
+        }
+
         private void btnReport_Click(object sender, EventArgs e)
         {
             ReloadDB();
@@ -235,46 +240,79 @@ namespace SalesReportPredictionSystem
         // calls for new query when date value has canged
         private void dtpDate_ValueChanged(object sender, EventArgs e)
         {
-            ShowSales();
+            RefreshSales();
         }
 
         private void rbMonthly_CheckedChanged(object sender, EventArgs e)
         {
-            ShowSales();
+            RefreshSales();
         }
 
         private void rbWeekly_CheckedChanged(object sender, EventArgs e)
         {
-            ShowSales();
+            RefreshSales();
         }
 
-        // if checkbox or datepicker changed, updates table with new query
-        private void ShowSales()
+        // Dumb but whatever
+        private readonly string[] Months =
         {
-            int day = dtpDate.Value.Day;
-            int month = dtpDate.Value.Month;
-            bool showMonthly = rbMonthly.Checked;
+            "yeet",
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        };
 
-            /*
-            // if selected ahead of time, no records will exist. Get taken back to todays date
-            if (dtpDate.Value.Date >= DateTime.Now.Date)
+        private int SundayGone = 1;
+
+        // if checkbox or datepicker changed, updates table with new query
+        private void RefreshSales()
+        {
+            DateTime firstDate = new DateTime();
+            DateTime lastDate = new DateTime();
+            if (rbMonthly.Checked)
             {
-                // show current sales
-                lblDate.Text = "Current sales";
-                dtpDate.Value = DateTime.Now.Date;
+                firstDate = new DateTime(dtpDate.Value.Year, dtpDate.Value.Month, 1);
+                int lastDay = DateTime.DaysInMonth(firstDate.Year, firstDate.Month);
+                lastDate = new DateTime(firstDate.Year, firstDate.Month, lastDay);
             }
-            */
+            else
+            {
+                // set the date to be the Sunday just gone
+                var timeDiff = new TimeSpan((int)dtpDate.Value.DayOfWeek, 0, 0, 0);
+                firstDate = dtpDate.Value - timeDiff;
+                this.SundayGone = firstDate.Day;
+                lastDate = firstDate + new TimeSpan(6, 0, 0, 0); // 7 days in a week minus 1
+            }
+
+            string firstDateStr = firstDate.ToString("yyyy-MM-dd");
+            string lastDateStr = lastDate.ToString("yyyy-MM-dd");
+
+            //MessageBox.Show("First = " + firstDateStr + ", Last = " + lastDateStr);
+
+            string queryStr = "SELECT " + Database.DefaultColumns + " FROM current_sales " +
+                              "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'";
+
+            ReloadGrid(queryStr);            
+
             // check if checkbox is selected
-            if (showMonthly)
+            if (rbMonthly.Checked)
             {
                 // show monthly sales
-                lblDate.Text = "Sales of month: " + month;
+                lblDate.Text = "Sales for " + this.Months[dtpDate.Value.Month];
             }
             else
             {
                 // show weekly sales
-                lblDate.Text = "Sales of week: " + day + "/" + month;
-
+                lblDate.Text = "Sales of week: " + this.SundayGone + "/" + this.Months[dtpDate.Value.Month];
             }
         }
     }
