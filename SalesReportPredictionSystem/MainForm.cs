@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+using System.IO;
 using System.Windows.Forms;
-
+using MySql.Data.MySqlClient;
+using CsvHelper;
 
 namespace SalesReportPredictionSystem
 {
@@ -17,6 +11,9 @@ namespace SalesReportPredictionSystem
         public MainForm()
         {
             InitializeComponent();
+            InitializeTables();
+            InitializeGrid();
+            ReloadGrid();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,9 +22,15 @@ namespace SalesReportPredictionSystem
             this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        }
 
-            InitializeGrid();
-            ReloadGrid();
+        private void InitializeTables()
+        {
+            /*
+            _salesTbl = new DataTable();
+            // initialise _salesTbl
+            this.dgvStock.DataSource = _salesTbl;
+            */
         }
 
         // sets up the gridviews headers and buttons
@@ -35,6 +38,7 @@ namespace SalesReportPredictionSystem
         {
             // column header text
             dgvStock.ColumnCount = 6;
+
             dgvStock.Columns[0].HeaderText = "Order ID";
             dgvStock.Columns[1].HeaderText = "Item ID";
             dgvStock.Columns[2].HeaderText = "Item Name";
@@ -42,17 +46,48 @@ namespace SalesReportPredictionSystem
             dgvStock.Columns[4].HeaderText = "Category";
             dgvStock.Columns[5].HeaderText = "Time Sold";
 
+
             // create edit buttons for table column
             DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
             editButtonColumn.Name = "Edit Item";
             editButtonColumn.Text = "Edit";
             editButtonColumn.UseColumnTextForButtonValue = true;
-            int columnIndex = 6;
+            int columnIndex = 5;
             if (dgvStock.Columns["Edit Item"] == null)
             {
                 dgvStock.Columns.Insert(columnIndex, editButtonColumn);
             }
             dgvStock.CellClick += dgvStock_CellClick;
+        }
+
+        private void ReloadDB()
+        {
+            if (Database.Connected)
+                return;
+
+            bool retry = false;
+            try
+            {
+                Database.Init();
+            }
+            catch (MySqlException ex)
+            {
+                Database.handle = null;
+                var result = Database.ShowError(ex);
+
+                if (result == DialogResult.Yes)
+                {
+                    var prompt = new ConnectionForm();
+                    prompt.ShowDialog(this);
+                    retry = prompt.DialogResult == DialogResult.Retry;
+                }
+            }
+
+            if (retry)
+                ReloadDB();
+
+            if (!Database.Connected)
+                Environment.Exit(0); // Exits the program
         }
 
         // loads data into the gridview
@@ -64,16 +99,23 @@ namespace SalesReportPredictionSystem
             // populate table data
             // this query updates the gui with everything in the data base
             // may be more simple way to do this with datagridview??
-            dbconnect.Init();
-            MySqlCommand cmd = new MySqlCommand("SELECT Order_No,id,item_name,brand_name,category,sale_datetime FROM current_sales", dbconnect.handle);
+
+            ReloadDB();
+            MySqlCommand cmd = new MySqlCommand("SELECT Order_No,id,item_name,brand_name,category,sale_datetime FROM current_sales", Database.handle);
+
             var reader = cmd.ExecuteReader();
+
             while (reader.Read())
             {
-                string[] row0 = {
-                    reader.GetInt32(0).ToString(),  reader.GetInt32(1).ToString(),  reader.GetString(2),
-                    reader.GetString(3),  reader.GetString(4), reader.GetDateTime(5).ToString()
-                };
-                this.dgvStock.Rows.Add(row0);
+
+           
+
+                string[] row = new string[reader.FieldCount];
+                for (int i = 0; i < row.Length; i++)
+                    row[i] = reader[i].ToString();
+
+                this.dgvStock.Rows.Add(row);
+
             }
             reader.Close();            
         }
@@ -95,6 +137,49 @@ namespace SalesReportPredictionSystem
             WeeklyForm form = new WeeklyForm();
             form.ShowDialog();
             this.Show();
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            ReloadDB();
+
+            // Show a 'Save File' dialog so that the user can pick a folder & filename
+            var saveDlg = new SaveFileDialog();
+            saveDlg.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
+            if (saveDlg.ShowDialog() != DialogResult.OK)
+                return;
+
+            var cmd = new MySqlCommand("SELECT * FROM current_sales", Database.handle);
+            var reader = cmd.ExecuteReader();
+
+            // Use that filename for CSV output directly from the MySql reader
+            using (var w = new StreamWriter(saveDlg.FileName))
+            using (var csv = new CsvWriter(w))
+            {
+                // Get the first row
+                reader.Read();
+
+                // Write out the header record, using the first row
+                int nCols = reader.FieldCount;
+                for (int i = 0; i < nCols; i++)
+                    csv.WriteField(reader.GetName(i));
+
+                csv.NextRecord();
+
+                // iterate over each row
+                // we use 'do-while' instead of 'while' since we've already called reader.Read() once
+                do
+                {
+                    // write the actual data for each column
+                    for (int i = 0; i < nCols; i++)
+                        csv.WriteField(reader[i]);
+
+                    csv.NextRecord();
+                }
+                while (reader.Read());
+            }
+
+            reader.Close();
         }
 
         // add row to database

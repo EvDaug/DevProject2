@@ -60,12 +60,14 @@ namespace SalesReportPredictionSystem
         {
            
             // checks for no empty textboxes
+
             if (!(tbName.Text == "") && !(tbBrand.Text == "") && !(tbCategory.Text == "") && !(tbDate.Text == "")) {
 
                 DateTime dateValue = DateTime.Parse(tbDate.Text);
                 string date = dateValue.ToString("yyyy-MM-dd HH:mm");
                 String query = "UPDATE current_sales SET item_name=\'" + tbName.Text + "\',brand_name=\'"+ tbBrand.Text + "\',category=\'" + tbCategory.Text + "\', sale_datetime=\'" + date+ "\' WHERE Order_No=" + id;
                 MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+
                 cmd.ExecuteNonQuery();
                 this.Close();
                 
