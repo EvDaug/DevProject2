@@ -15,7 +15,7 @@ namespace SalesReportPredictionSystem
             InitializeGrid();
             ReloadGrid();
         }
-
+        /*
         private void Form1_Load(object sender, EventArgs e)
         {
             // fix window size
@@ -23,7 +23,7 @@ namespace SalesReportPredictionSystem
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
-
+        */
         private void InitializeTables()
         {
             /*
@@ -107,9 +107,6 @@ namespace SalesReportPredictionSystem
 
             while (reader.Read())
             {
-
-           
-
                 string[] row = new string[reader.FieldCount];
                 for (int i = 0; i < row.Length; i++)
                     row[i] = reader[i].ToString();
@@ -120,12 +117,6 @@ namespace SalesReportPredictionSystem
             reader.Close();            
         }
         
-
-    
-      
-
-       
-
         private void btnReport_Click(object sender, EventArgs e)
         {
             ReloadDB();
@@ -238,6 +229,52 @@ namespace SalesReportPredictionSystem
 
                 EditForm form = new EditForm(orderId, orderProduct, orderBrand, orderCategory, orderSold);
                 form.ShowDialog();
+            }
+        }
+
+        // calls for new query when date value has canged
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+            ShowSales();
+        }
+
+        private void rbMonthly_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowSales();
+        }
+
+        private void rbWeekly_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowSales();
+        }
+
+        // if checkbox or datepicker changed, updates table with new query
+        private void ShowSales()
+        {
+            int day = dtpDate.Value.Day;
+            int month = dtpDate.Value.Month;
+            bool showMonthly = rbMonthly.Checked;
+
+            /*
+            // if selected ahead of time, no records will exist. Get taken back to todays date
+            if (dtpDate.Value.Date >= DateTime.Now.Date)
+            {
+                // show current sales
+                lblDate.Text = "Current sales";
+                dtpDate.Value = DateTime.Now.Date;
+            }
+            */
+            // check if checkbox is selected
+            if (showMonthly)
+            {
+                // show monthly sales
+                lblDate.Text = "Sales of month: " + month;
+            }
+            else
+            {
+                // show weekly sales
+                lblDate.Text = "Sales of week: " + day + "/" + month;
+
             }
         }
     }

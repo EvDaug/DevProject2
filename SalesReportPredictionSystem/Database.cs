@@ -10,8 +10,8 @@ namespace SalesReportPredictionSystem
         public static bool Connected { get { return handle != null; } }
 
         public static string ServerName = "localhost";
-        public static string DBName = "php_sales";
-        public static string UserID = "root";
+        public static string DBName = "big_pharma";
+        public static string UserID = "test";
         public static string Password = null;
         public static bool UsePwd = false;
 
