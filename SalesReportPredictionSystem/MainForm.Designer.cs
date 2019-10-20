@@ -30,8 +30,7 @@ namespace SalesReportPredictionSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnMonthly = new System.Windows.Forms.Button();
-            this.btnWeekly = new System.Windows.Forms.Button();
+            
             this.btnReport = new System.Windows.Forms.Button();
             this.dgvStock = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,29 +45,7 @@ namespace SalesReportPredictionSystem
             this.btnRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnMonthly
-            // 
-            this.btnMonthly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnMonthly.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnMonthly.Location = new System.Drawing.Point(825, 474);
-            this.btnMonthly.Name = "btnMonthly";
-            this.btnMonthly.Size = new System.Drawing.Size(755, 57);
-            this.btnMonthly.TabIndex = 0;
-            this.btnMonthly.Text = "View Monthly Sales";
-            this.btnMonthly.UseVisualStyleBackColor = false;
-            this.btnMonthly.Click += new System.EventHandler(this.btnMonthly_Click);
-            // 
-            // btnWeekly
-            // 
-            this.btnWeekly.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnWeekly.Location = new System.Drawing.Point(50, 474);
-            this.btnWeekly.Name = "btnWeekly";
-            this.btnWeekly.Size = new System.Drawing.Size(755, 57);
-            this.btnWeekly.TabIndex = 1;
-            this.btnWeekly.Text = "View Weekly Sales";
-            this.btnWeekly.UseVisualStyleBackColor = false;
-            this.btnWeekly.Click += new System.EventHandler(this.btnWeekly_Click);
+          
             // 
             // btnReport
             // 
@@ -189,8 +166,7 @@ namespace SalesReportPredictionSystem
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.dgvStock);
             this.Controls.Add(this.btnReport);
-            this.Controls.Add(this.btnWeekly);
-            this.Controls.Add(this.btnMonthly);
+           
             this.Name = "MainForm";
             this.Text = "Sales Prediction Report System";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -202,8 +178,7 @@ namespace SalesReportPredictionSystem
 
         #endregion
 
-        private System.Windows.Forms.Button btnMonthly;
-        private System.Windows.Forms.Button btnWeekly;
+       
         private System.Windows.Forms.Button btnReport;
         //clean up public ->
         public System.Windows.Forms.DataGridView dgvStock;

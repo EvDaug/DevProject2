@@ -120,7 +120,7 @@
             this.lblBrand.TabIndex = 18;
             this.lblBrand.Text = "Brand";
             // 
-            // tbSold
+            // tbDate
             // 
             this.tbDate.Location = new System.Drawing.Point(300, 272);
             this.tbDate.Name = "tbSold";

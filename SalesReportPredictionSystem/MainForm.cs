@@ -52,7 +52,7 @@ namespace SalesReportPredictionSystem
             editButtonColumn.Name = "Edit Item";
             editButtonColumn.Text = "Edit";
             editButtonColumn.UseColumnTextForButtonValue = true;
-            int columnIndex = 5;
+            int columnIndex = 6;
             if (dgvStock.Columns["Edit Item"] == null)
             {
                 dgvStock.Columns.Insert(columnIndex, editButtonColumn);
@@ -121,23 +121,10 @@ namespace SalesReportPredictionSystem
         }
         
 
-        // load monthly form
-        private void btnMonthly_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            MonthlyForm form = new MonthlyForm();
-            form.ShowDialog();
-            this.Show();
-        }
+    
+      
 
-        // load weekly form
-        private void btnWeekly_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            WeeklyForm form = new WeeklyForm();
-            form.ShowDialog();
-            this.Show();
-        }
+       
 
         private void btnReport_Click(object sender, EventArgs e)
         {

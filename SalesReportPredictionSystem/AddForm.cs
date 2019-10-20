@@ -42,7 +42,7 @@ namespace SalesReportPredictionSystem
                 String query = "INSERT INTO current_sales( id, item_name, brand_name, category, sale_datetime) VALUES (\'" + tbId.Text+ "\',\'" + tbName.Text + "\',\'" + tbBrand.Text + "\',\'" + tbCategory.Text + "\',\'" + tbDate.Text+ "\')";
 
 
-                MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+                MySqlCommand cmd = new MySqlCommand(query, Database.handle);
                 cmd.ExecuteNonQuery();
                 this.Close();
             }

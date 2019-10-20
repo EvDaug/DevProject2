@@ -66,7 +66,7 @@ namespace SalesReportPredictionSystem
                 DateTime dateValue = DateTime.Parse(tbDate.Text);
                 string date = dateValue.ToString("yyyy-MM-dd HH:mm");
                 String query = "UPDATE current_sales SET item_name=\'" + tbName.Text + "\',brand_name=\'"+ tbBrand.Text + "\',category=\'" + tbCategory.Text + "\', sale_datetime=\'" + date+ "\' WHERE Order_No=" + id;
-                MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+                MySqlCommand cmd = new MySqlCommand(query, Database.handle);
 
                 cmd.ExecuteNonQuery();
                 this.Close();
@@ -89,7 +89,7 @@ namespace SalesReportPredictionSystem
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 String query = "DELETE FROM current_sales WHERE Order_No=" + id;
-                MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+                MySqlCommand cmd = new MySqlCommand(query, Database.handle);
                 cmd.ExecuteNonQuery();
                 this.Close();
             }
