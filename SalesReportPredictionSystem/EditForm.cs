@@ -34,7 +34,8 @@ namespace SalesReportPredictionSystem
             tbName.Text = strName;
             tbBrand.Text = strBrand;
             tbCategory.Text = strCategory;
-            tbSold.Text = strSold;
+            tbDate.Text = strSold;
+            
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -57,17 +58,17 @@ namespace SalesReportPredictionSystem
         // updates a table row with the newly entered data
         private void UpdateRow()
         {
+           
             // checks for no empty textboxes
-            if (!(tbName.Text == "") && !(tbBrand.Text == "") && !(tbCategory.Text == "") && !(tbSold.Text == "")) {
-                // TODO:
-                // this query needs to be updated for new database
-                /*
-                // this query updates the database with text input
-                String query = "UPDATE table1 SET id=" + tbID.Text + ",ProductName=\'" + tbName.Text + "\',brand=\'" + tbBrand.Text + "\',stockRemaining=" + tbStock.Text + ", stockSold=" + tbSold.Text + " WHERE id="+id;
+            if (!(tbName.Text == "") && !(tbBrand.Text == "") && !(tbCategory.Text == "") && !(tbDate.Text == "")) {
+
+                DateTime dateValue = DateTime.Parse(tbDate.Text);
+                string date = dateValue.ToString("yyyy-MM-dd HH:mm");
+                String query = "UPDATE current_sales SET item_name=\'" + tbName.Text + "\',brand_name=\'"+ tbBrand.Text + "\',category=\'" + tbCategory.Text + "\', sale_datetime=\'" + date+ "\' WHERE Order_No=" + id;
                 MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
                 cmd.ExecuteNonQuery();
                 this.Close();
-                */
+                
             } else
             {
                 string caption = "Error";
@@ -85,8 +86,9 @@ namespace SalesReportPredictionSystem
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                // TODO: 
-                // query to delete selected row
+                String query = "DELETE FROM current_sales WHERE Order_No=" + id;
+                MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+                cmd.ExecuteNonQuery();
                 this.Close();
             }
         }

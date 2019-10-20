@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,15 @@ using System.Windows.Forms;
 
 namespace SalesReportPredictionSystem
 {
+    
     public partial class MonthlyForm : Form
     {
+        private String monthid,date;
+        private DateTime dt, startOfMonth;
         public MonthlyForm()
         {
             InitializeComponent();
+            GetLatestMonth();
             RefreshTable();
         }
 
@@ -31,6 +36,15 @@ namespace SalesReportPredictionSystem
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
+        private void GetLatestMonth() {
+            //not enough tables  -2->-1
+             dt = DateTime.Now.AddMonths(-2);
+             startOfMonth = new DateTime(dt.Year, dt.Month, 1);
+             date = startOfMonth.ToString("yyyy-MM-dd");
+
+           
+
+        }
 
         // loads infomation into table
         private void RefreshTable()
@@ -38,21 +52,21 @@ namespace SalesReportPredictionSystem
             dgvStock.Columns[0].HeaderText = "Item ID";
             dgvStock.Columns[1].HeaderText = "Item Name";
             dgvStock.Columns[2].HeaderText = "Brand";
-            dgvStock.Columns[3].HeaderText = "Stock Remaining";
-            dgvStock.Columns[4].HeaderText = "Amount Sold";
-
-            string[] row0 = { "001", "item1", "brand1",
-                "3", "5" };
-            string[] row1 = { "002", "item2", "brand1",
-                "6", "7" };
-            string[] row2 = { "003", "item3", "brand3",
-                "3", "4" };
-            string[] row3 = { "004", "item4", "brand4",
-                "2", "3" };
-            this.dgvStock.Rows.Add(row0);
-            this.dgvStock.Rows.Add(row1);
-            this.dgvStock.Rows.Add(row2);
-            this.dgvStock.Rows.Add(row3);
+            dgvStock.Columns[3].HeaderText = "Categorey";
+            dgvStock.Columns[4].HeaderText = "Time Sold";
+            dbconnect.Init();
+            MySqlCommand cmd = new MySqlCommand("SELECT id,item_name,brand_name,category,sale_datetime FROM "+monthid, dbconnect.handle);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string[] row0 = {
+                    reader.GetInt32(0).ToString(),  reader.GetInt32(1).ToString(),  reader.GetString(2),
+                    reader.GetString(3),  reader.GetString(4), reader.GetDateTime(5).ToString()
+                };
+                this.dgvStock.Rows.Add(row0);
+            }
+            reader.Close();
         }
     }
-}
+    }
+

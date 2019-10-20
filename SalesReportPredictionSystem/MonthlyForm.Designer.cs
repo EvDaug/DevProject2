@@ -33,6 +33,7 @@
             this.lblDate = new System.Windows.Forms.Label();
             this.btnBack = new System.Windows.Forms.Button();
             this.dgvStock = new System.Windows.Forms.DataGridView();
+            this.dtPicker = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,6 +58,12 @@
             this.tbSearch.Size = new System.Drawing.Size(193, 31);
             this.tbSearch.TabIndex = 12;
             this.tbSearch.Text = "Search";
+            //
+            //
+            //
+            this.dtPicker.Location = new System.Drawing.Point(375, 93);
+            this.dtPicker.Name = "datetime";
+
             // 
             // lblDate
             // 
@@ -134,6 +141,7 @@
             this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.dtPicker);
             this.Name = "MonthlyForm";
             this.Text = "Sales Prediction Report System";
             this.Load += new System.EventHandler(this.MonthlyForm_Load);
@@ -150,6 +158,7 @@
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.DataGridView dgvStock;
+        private System.Windows.Forms.DateTimePicker dtPicker;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;

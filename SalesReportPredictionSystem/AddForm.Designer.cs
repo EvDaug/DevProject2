@@ -19,6 +19,7 @@
             }
             base.Dispose(disposing);
         }
+       
 
         #region Windows Form Designer generated code
 
@@ -33,12 +34,14 @@
             this.lblHeading = new System.Windows.Forms.Label();
             this.lblCategory = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
-            this.lblSold = new System.Windows.Forms.Label();
+            this.lblId = new System.Windows.Forms.Label();
+            this.lblDate = new System.Windows.Forms.Label();
             this.lblBrand = new System.Windows.Forms.Label();
-            this.tbSold = new System.Windows.Forms.TextBox();
+            this.tbDate = new System.Windows.Forms.TextBox();
             this.tbCategory = new System.Windows.Forms.TextBox();
             this.tbBrand = new System.Windows.Forms.TextBox();
             this.tbName = new System.Windows.Forms.TextBox();
+            this.tbId = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -89,14 +92,24 @@
             this.lblName.TabIndex = 21;
             this.lblName.Text = "Name";
             // 
+            // 
+            // lblId
+            // 
+            this.lblId.AutoSize = true;
+            this.lblId.Location = new System.Drawing.Point(183, 127);
+            this.lblId.Name = "lblId";
+            this.lblId.Size = new System.Drawing.Size(68, 25);
+            this.lblId.TabIndex = 22;
+            this.lblId.Text = "Product ID";
+            // 
             // lblSold
             // 
-            this.lblSold.AutoSize = true;
-            this.lblSold.Location = new System.Drawing.Point(179, 275);
-            this.lblSold.Name = "lblSold";
-            this.lblSold.Size = new System.Drawing.Size(115, 25);
-            this.lblSold.TabIndex = 19;
-            this.lblSold.Text = "Stock Sold";
+            this.lblDate.AutoSize = true;
+            this.lblDate.Location = new System.Drawing.Point(179, 275);
+            this.lblDate.Name = "lblSold";
+            this.lblDate.Size = new System.Drawing.Size(115, 25);
+            this.lblDate.TabIndex = 19;
+            this.lblDate.Text = "Stock Sold";
             // 
             // lblBrand
             // 
@@ -109,10 +122,10 @@
             // 
             // tbSold
             // 
-            this.tbSold.Location = new System.Drawing.Point(300, 272);
-            this.tbSold.Name = "tbSold";
-            this.tbSold.Size = new System.Drawing.Size(300, 31);
-            this.tbSold.TabIndex = 16;
+            this.tbDate.Location = new System.Drawing.Point(300, 272);
+            this.tbDate.Name = "tbSold";
+            this.tbDate.Size = new System.Drawing.Size(300, 31);
+            this.tbDate.TabIndex = 16;
             // 
             // tbCategory
             // 
@@ -135,6 +148,13 @@
             this.tbName.Size = new System.Drawing.Size(300, 31);
             this.tbName.TabIndex = 13;
             // 
+            // tbID
+            // 
+            this.tbId.Location = new System.Drawing.Point(300, 124);
+            this.tbId.Name = "tbId";
+            this.tbId.Size = new System.Drawing.Size(300, 31);
+            this.tbId.TabIndex = 12;
+            // 
             // AddForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -145,12 +165,14 @@
             this.Controls.Add(this.lblHeading);
             this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.lblName);
-            this.Controls.Add(this.lblSold);
+            this.Controls.Add(this.lblId);
+            this.Controls.Add(this.lblDate);
             this.Controls.Add(this.lblBrand);
-            this.Controls.Add(this.tbSold);
+            this.Controls.Add(this.tbDate);
             this.Controls.Add(this.tbCategory);
             this.Controls.Add(this.tbBrand);
             this.Controls.Add(this.tbName);
+            this.Controls.Add(this.tbId);
             this.Name = "AddForm";
             this.Text = "Sales Prediction Report System";
             this.Load += new System.EventHandler(this.AddForm_Load);
@@ -166,11 +188,24 @@
         private System.Windows.Forms.Label lblHeading;
         private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblSold;
+        private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.Label lblBrand;
-        private System.Windows.Forms.TextBox tbSold;
+        private System.Windows.Forms.Label lblId;
+        private System.Windows.Forms.TextBox tbDate;
         private System.Windows.Forms.TextBox tbCategory;
         private System.Windows.Forms.TextBox tbBrand;
         private System.Windows.Forms.TextBox tbName;
+        private System.Windows.Forms.TextBox tbId;
     }
+
+
+
+
+
+
+
+
+
+
+
 }

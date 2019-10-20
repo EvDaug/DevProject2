@@ -13,7 +13,7 @@ namespace SalesReportPredictionSystem
         {
             Console.WriteLine("Opening DB...");
 
-            handle= new MySqlConnection(@"server=localhost;database=newdb;uid=root");
+            handle= new MySqlConnection(@"server=localhost;database=pharm2;uid=root");
             try
             {
                 handle.Open();

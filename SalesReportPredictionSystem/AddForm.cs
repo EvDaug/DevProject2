@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,9 @@ namespace SalesReportPredictionSystem
 {
     public partial class AddForm : Form
     {
-        public AddForm()
+        public AddForm( )
         {
+
             InitializeComponent();
         }
 
@@ -35,10 +37,13 @@ namespace SalesReportPredictionSystem
         private void AddRow()
         {
             // checks for no empty textboxes
-            if (!(tbName.Text == "") && !(tbBrand.Text == "") && !(tbCategory.Text == "") && !(tbSold.Text == ""))
+            if (!(tbName.Text == "") && !(tbBrand.Text == "") && !(tbCategory.Text == "") && !(tbDate.Text == "") && !(tbId.Text == ""))
             {
-                // TODO:
-                // add query to add table rows
+                String query = "INSERT INTO current_sales( id, item_name, brand_name, category, sale_datetime) VALUES (\'" + tbId.Text+ "\',\'" + tbName.Text + "\',\'" + tbBrand.Text + "\',\'" + tbCategory.Text + "\',\'" + tbDate.Text+ "\')";
+
+
+                MySqlCommand cmd = new MySqlCommand(query, dbconnect.handle);
+                cmd.ExecuteNonQuery();
                 this.Close();
             }
             else

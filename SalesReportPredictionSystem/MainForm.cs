@@ -40,7 +40,7 @@ namespace SalesReportPredictionSystem
             dgvStock.Columns[2].HeaderText = "Item Name";
             dgvStock.Columns[3].HeaderText = "Brand";
             dgvStock.Columns[4].HeaderText = "Category";
-            dgvStock.Columns[5].HeaderText = "Stock Sold";
+            dgvStock.Columns[5].HeaderText = "Time Sold";
 
             // create edit buttons for table column
             DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
@@ -65,13 +65,13 @@ namespace SalesReportPredictionSystem
             // this query updates the gui with everything in the data base
             // may be more simple way to do this with datagridview??
             dbconnect.Init();
-            MySqlCommand cmd = new MySqlCommand("SELECT id,ProductName,brand,stockRemaining, stockSold FROM table1", dbconnect.handle);
+            MySqlCommand cmd = new MySqlCommand("SELECT Order_No,id,item_name,brand_name,category,sale_datetime FROM current_sales", dbconnect.handle);
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 string[] row0 = {
-                    reader.GetInt32(0).ToString(),  reader.GetString(1),  reader.GetString(2).ToString(),
-                    reader.GetInt32(3).ToString(),  reader.GetInt32(4).ToString(), "¯\\_(ツ)_/¯"
+                    reader.GetInt32(0).ToString(),  reader.GetInt32(1).ToString(),  reader.GetString(2),
+                    reader.GetString(3),  reader.GetString(4), reader.GetDateTime(5).ToString()
                 };
                 this.dgvStock.Rows.Add(row0);
             }
@@ -166,49 +166,6 @@ namespace SalesReportPredictionSystem
 
                 EditForm form = new EditForm(orderId, orderProduct, orderBrand, orderCategory, orderSold);
                 form.ShowDialog();
-            }
-        }
-
-        // calls for new query when date value has canged
-        private void dtpDate_ValueChanged(object sender, EventArgs e)
-        {
-            TableQuery();
-        }
-
-        // calls for new query to switch between monthly and weekly sales
-        private void cbMonthly_CheckedChanged(object sender, EventArgs e)
-        {
-            TableQuery();
-        }
-
-        // if checkbox or datepicker changed, updates table with new query
-        private void TableQuery()
-        {
-            int day = dtpDate.Value.Day;
-            int month = dtpDate.Value.Month;
-            bool showMonthly = cbMonthly.Checked;
-
-            // if selected ahead of time, no records will exist. Get taken back to todays date
-            if (dtpDate.Value.Date >= DateTime.Now.Date)
-            {
-                // show current sales
-                lblDate.Text = "Current sales";
-                dtpDate.Value = DateTime.Now.Date;
-            }
-            else
-            {
-                // check if checkbox is selected
-                if (showMonthly)
-                {
-                    // show monthly sales
-                    lblDate.Text = "Sales of month: " + month;
-                }
-                else
-                {
-                    // show weekly sales
-                    lblDate.Text = "Sales of week: " + day + "/" + month;
-
-                }
             }
         }
     }
