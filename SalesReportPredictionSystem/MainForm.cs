@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using CsvHelper;
-using System.Collections.Generic;
 
 namespace SalesReportPredictionSystem
 {
@@ -23,8 +20,6 @@ namespace SalesReportPredictionSystem
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
-
-        
 
         // sets up the gridviews headers and buttons
         private void InitializeGrid()
@@ -52,7 +47,8 @@ namespace SalesReportPredictionSystem
             }
             dgvStock.CellClick += dgvStock_CellClick;
         }
-        private void ReloadDB()
+
+        public void ReloadDB()
         {
             if (Database.Connected)
                 return;
@@ -81,6 +77,7 @@ namespace SalesReportPredictionSystem
             if (!Database.Connected)
                 Environment.Exit(0); // Exits the program
         }
+
         // loads data into the gridview
         private void ReloadGrid(string queryStr)
         {
@@ -113,89 +110,89 @@ namespace SalesReportPredictionSystem
             ReloadGrid("SELECT " + Database.DefaultColumns + " FROM current_sales");
         }
 
-        private int Countstock(string id)
-        {
-
-            MySqlCommand cmd = new MySqlCommand("SELECT id,COUNT(*) FROM current_sales GROUP BY id;", Database.handle);
-            Dictionary<string, int> dictionary = new Dictionary<string, int>();
-            var reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-
-                string[] row = new string[reader.FieldCount];
-                for (int i = 0; i < row.Length; i++)
-                    row[i] = reader[i].ToString();
-
-                dictionary.Add(row[0], Int32.Parse(row[1]));
-            }
-            reader.Close();
-            int value;
-            dictionary.TryGetValue(id, out value);
-            return value;
-        }
         private void btnReportWeekly_Click(object sender, EventArgs e)
         {
-            Prediciton(true);
+            ExportPrediciton();
         }
-            private void btnReport_Click(object sender, EventArgs e)
+        private void btnReport_Click(object sender, EventArgs e)
         {
-            Prediciton(false);
+            ExportPrediciton();
         }
-        private void Prediciton(bool weekly) {
+
+        private void ExportPrediciton()
+        {
             ReloadDB();
-            int stock;
-            String date = DateTime.Now.ToString("yyyy-MM-dd");
-            int d = DateTime.Now.Day;
-            int days = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-            String firstDay;
-            if (!weekly)
-            {
-                firstDay = DateTime.Now.AddDays(-d).ToString("yyyy-MM-dd");
-                stock = 100;
-            }
-            else {
-                firstDay = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                stock = 25;
-            }
+
             // Show a 'Save File' dialog so that the user can pick a folder & filename
             var saveDlg = new SaveFileDialog();
             saveDlg.Filter = "CSV file (*.csv)|*.csv|All files (*.*)|*.*";
             if (saveDlg.ShowDialog() != DialogResult.OK)
                 return;
 
-            var cmd = new MySqlCommand("SELECT COUNT(*),id,item_name,brand_name,category FROM current_sales WHERE  sale_datetime >= '" + firstDay + "' AND sale_datetime <= '" + date + "' GROUP BY id", Database.handle);
-            var reader = cmd.ExecuteReader();
+            DateTime current = DateTime.Now;
+            DateTime begin;
 
-            // Use that filename for CSV output directly from the MySql reader
-            using (var w = new StreamWriter(saveDlg.FileName))
-            using (var csv = new CsvWriter(w))
+            int stock;
+            if (rbMonthly.Checked)
             {
-                // Get the first row
-                reader.Read();
-
-                // Write out the header record, using the first row
-                int nCols = reader.FieldCount;
-                for (int i = 0; i < nCols; i++)
-                    csv.WriteField(reader.GetName(i));
-
-                csv.NextRecord();
-
-                // iterate over each row
-                // we use 'do-while' instead of 'while' since we've already called reader.Read() once
-                do
-                {
-                    int pred= stock - reader.GetInt32(0);
-                    csv.WriteField(pred.ToString());
-                    // write the actual data for each column
-                    for (int i = 1; i < nCols; i++)
-                        csv.WriteField(reader[i]);
-
-                    csv.NextRecord();
-                }
-                while (reader.Read());
+                begin = current.StartOfMonth();
+                stock = 100;
+            }
+            else
+            {
+                begin = current.StartOfWeek();
+                stock = 25;
             }
 
-            reader.Close();
+            string beginDate = begin.ToString("yyyy-MM-dd");
+            string endDate = current.ToString("yyyy-MM-dd");
+
+            string queryStr =
+                "SELECT " + stock + "-COUNT(*) as stock_left,id,item_name,brand_name,category FROM current_sales " +
+                "WHERE sale_datetime >= '" + beginDate + "' AND sale_datetime <= '" + endDate + "' " +
+                "GROUP BY Order_No" // should be 'id', but doesn't work as the DB tables aren't configured appropriately
+            ;
+
+            try {
+                var cmd = new MySqlCommand(queryStr, Database.handle);
+                Utils.ExportResultsToCSV(cmd, saveDlg.FileName);
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Could not export prediction: " + ex.Message);
+            }
+        }
+
+        // if checkbox or datepicker changed, updates table with new query
+        private void RefreshSales()
+        {
+            DateTime firstDate = new DateTime();
+            DateTime lastDate = new DateTime();
+
+            if (rbMonthly.Checked)
+            {
+                // Start from the 1st day of the month
+                firstDate = dtpDate.Value.StartOfMonth();
+                int lastDay = DateTime.DaysInMonth(firstDate.Year, firstDate.Month);
+                lastDate = new DateTime(firstDate.Year, firstDate.Month, lastDay);
+
+                lblDate.Text = "Monthly Sales for " + Utils.Months[firstDate.Month];
+            }
+            else
+            {
+                // Start from the closest Sunday
+                firstDate = dtpDate.Value.StartOfWeek();
+                lastDate = firstDate.AddDays(6); // 7 days in a week minus 1
+
+                lblDate.Text = "Weekly Sales for " + firstDate.ToString("dd/MM") + " to " + lastDate.ToString("dd/MM");
+            }
+
+            string firstDateStr = firstDate.ToString("yyyy-MM-dd");
+            string lastDateStr = lastDate.ToString("yyyy-MM-dd");
+
+            string queryStr = "SELECT " + Database.DefaultColumns + " FROM current_sales " +
+                              "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'";
+
+            ReloadGrid(queryStr);
         }
 
         // add row to database
@@ -224,27 +221,20 @@ namespace SalesReportPredictionSystem
 
             if (searchValue != null)
             {
-                try
+                foreach (DataGridViewRow row in dgvStock.Rows)
                 {
-                    foreach (DataGridViewRow row in dgvStock.Rows)
+                    if ((row.Cells[2].Value.ToString().Equals(searchValue))
+                        || (row.Cells[3].Value.ToString().Equals(searchValue))
+                        || (row.Cells[4].Value.ToString().Equals(searchValue))
+                        )
                     {
-                        if ((row.Cells[2].Value.ToString().Equals(searchValue))
-                            || (row.Cells[3].Value.ToString().Equals(searchValue))
-                            || (row.Cells[4].Value.ToString().Equals(searchValue))
-                            )
-                        {
-                            row.Selected = true;
-                            found = true;
-                        }
+                        row.Selected = true;
+                        found = true;
                     }
-                }
-                catch
-                {
-
                 }
 
                 // displays error message when nothing found
-                if (found == false)
+                if (!found)
                 {
                     string message = "Could not find " + searchValue + ".";
                     string caption = "Error";
@@ -287,69 +277,5 @@ namespace SalesReportPredictionSystem
         {
             RefreshSales();
         }
-
-        // Dumb but whatever
-        private readonly string[] Months =
-        {
-            "yeet",
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        };
-
-        private int SundayGone = 1;
-
-        // if checkbox or datepicker changed, updates table with new query
-        private void RefreshSales()
-        {
-            DateTime firstDate = new DateTime();
-            DateTime lastDate = new DateTime();
-            if (rbMonthly.Checked)
-            {
-                firstDate = new DateTime(dtpDate.Value.Year, dtpDate.Value.Month, 1);
-                int lastDay = DateTime.DaysInMonth(firstDate.Year, firstDate.Month);
-                lastDate = new DateTime(firstDate.Year, firstDate.Month, lastDay);
-            }
-            else
-            {
-                // set the date to be the Sunday just gone
-                var timeDiff = new TimeSpan((int)dtpDate.Value.DayOfWeek, 0, 0, 0);
-                firstDate = dtpDate.Value - timeDiff;
-                this.SundayGone = firstDate.Day;
-                lastDate = firstDate + new TimeSpan(6, 0, 0, 0); // 7 days in a week minus 1
-            }
-
-            string firstDateStr = firstDate.ToString("yyyy-MM-dd");
-            string lastDateStr = lastDate.ToString("yyyy-MM-dd");
-
-            //MessageBox.Show("First = " + firstDateStr + ", Last = " + lastDateStr);
-
-            string queryStr = "SELECT " + Database.DefaultColumns + " FROM current_sales " +
-                              "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'";
-
-            ReloadGrid(queryStr);
-
-            // check if checkbox is selected
-            if (rbMonthly.Checked)
-            {
-                // show monthly sales
-                lblDate.Text = "Sales for " + this.Months[dtpDate.Value.Month];
-            }
-            else
-            {
-                // show weekly sales
-                lblDate.Text = "Sales of week: " + this.SundayGone + "/" + this.Months[dtpDate.Value.Month];
-            }
-        }
     }
 }
-
