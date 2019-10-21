@@ -12,7 +12,7 @@ namespace SalesReportPredictionSystem
         {
             InitializeComponent();
             InitializeGrid();
-            ReloadGrid();
+            RefreshSales();
         }
 
         // sets up the gridviews headers and buttons
@@ -39,7 +39,7 @@ namespace SalesReportPredictionSystem
             }
             dgvStock.CellClick += dgvStock_CellClick;
         }
-
+        /*
         private void ReloadGrid()
         {
             Utils.ReloadDB();
@@ -49,6 +49,7 @@ namespace SalesReportPredictionSystem
                 "INNER JOIN products on current_sales.product_id = products.product_id"
             );
         }
+        */
 
         private void btnReportWeekly_Click(object sender, EventArgs e)
         {
@@ -61,7 +62,7 @@ namespace SalesReportPredictionSystem
 
         private void ExportPrediction(DateTime beginDate, int stockCeil)
         {
-            Utils.ReloadDB();
+            Database.Reload();
 
             // Show a 'Save File' dialog so that the user can pick a folder & filename
             var saveDlg = new SaveFileDialog();
@@ -70,12 +71,15 @@ namespace SalesReportPredictionSystem
                 return;
 
             string beginDateStr = beginDate.ToString("yyyy-MM-dd");
-            string endDateStr = DateTime.Now.ToString("yyyy-MM-dd");
+
+            DateTime endDate = DateTime.Now.AddDays(1); // bit of a hack but w/e
+            string endDateStr = endDate.ToString("yyyy-MM-dd");
 
             string queryStr =
-                "SELECT " + stockCeil + "-COUNT(*) as stock_left,id,item_name,brand_name,category FROM current_sales " +
+                "SELECT " + stockCeil + "-COUNT(*) as stock_left,products.product_id,products.item_name,products.brand_name,products.category " +
+                "FROM current_sales RIGHT JOIN products ON current_sales.product_id = products.product_id " +
                 "WHERE sale_datetime >= '" + beginDateStr + "' AND sale_datetime <= '" + endDateStr + "' " +
-                "GROUP BY Order_No" // should be 'id', but doesn't work as the DB tables aren't configured appropriately
+                "GROUP BY product_id"
             ;
 
             try {
@@ -83,7 +87,7 @@ namespace SalesReportPredictionSystem
                 Utils.ExportResultsToCSV(cmd, saveDlg.FileName);
             }
             catch (Exception ex) {
-                MessageBox.Show("Could not export prediction: " + ex.Message);
+                MessageBox.Show("Could not export prediction:\n" + ex.Message);
             }
         }
 
@@ -97,8 +101,7 @@ namespace SalesReportPredictionSystem
             {
                 // Start from the 1st day of the month
                 firstDate = dtpDate.Value.StartOfMonth();
-                int lastDay = DateTime.DaysInMonth(firstDate.Year, firstDate.Month);
-                lastDate = new DateTime(firstDate.Year, firstDate.Month, lastDay);
+                lastDate = firstDate.AddMonths(1);
 
                 lblDate.Text = "Monthly Sales for " + Utils.Months[firstDate.Month];
             }
@@ -106,7 +109,7 @@ namespace SalesReportPredictionSystem
             {
                 // Start from the closest Sunday
                 firstDate = dtpDate.Value.StartOfWeek();
-                lastDate = firstDate.AddDays(6); // 7 days in a week minus 1
+                lastDate = firstDate.AddDays(7);
 
                 lblDate.Text = "Weekly Sales for " + firstDate.ToString("dd/MM") + " to " + lastDate.ToString("dd/MM");
             }
@@ -114,9 +117,13 @@ namespace SalesReportPredictionSystem
             string firstDateStr = firstDate.ToString("yyyy-MM-dd");
             string lastDateStr = lastDate.ToString("yyyy-MM-dd");
 
-            string queryStr = "SELECT " + DefaultColumns + " FROM current_sales " +
-                              "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'";
+            string queryStr =
+                "SELECT " + DefaultColumns + " FROM current_sales " +
+                "INNER JOIN products on current_sales.product_id = products.product_id " +
+                "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'"
+            ;
 
+            Database.Reload();
             Utils.ReloadGrid(this.dgvStock, queryStr);
         }
 
@@ -125,13 +132,13 @@ namespace SalesReportPredictionSystem
         {
             var form = new AddSale();
             form.ShowDialog();
-            ReloadGrid();
+            RefreshSales();
         }
 
         // reloads the data ito the gridview
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            ReloadGrid();
+            RefreshSales();
         }
 
         // search function
@@ -179,7 +186,7 @@ namespace SalesReportPredictionSystem
 
             EditSale form = new EditSale(orderNo);
             form.ShowDialog();
-            ReloadGrid();
+            RefreshSales();
         }
 
         private void dtpDate_ValueChanged(object sender, EventArgs e)

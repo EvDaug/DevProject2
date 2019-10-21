@@ -77,36 +77,6 @@ namespace SalesReportPredictionSystem
             reader.Close();
         }
 
-        public static void ReloadDB()
-        {
-            if (Database.Connected)
-                return;
-
-            bool retry = false;
-            try
-            {
-                Database.Init();
-            }
-            catch (MySqlException ex)
-            {
-                Database.handle = null;
-                var result = Database.ShowError(ex);
-
-                if (result == DialogResult.Yes)
-                {
-                    var prompt = new ConnectionForm();
-                    prompt.ShowDialog();
-                    retry = prompt.DialogResult == DialogResult.Retry;
-                }
-            }
-
-            if (retry)
-                ReloadDB();
-
-            if (!Database.Connected)
-                Environment.Exit(0); // Exits the program
-        }
-
         // loads data into the gridview
         public static void ReloadGrid(DataGridView gridView, string queryStr)
         {

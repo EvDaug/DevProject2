@@ -97,7 +97,7 @@ namespace SalesReportPredictionSystem
         {
             _canSelect = false;
             _gridView.ClearSelection();
-            Utils.ReloadDB();
+            Database.Reload();
 
             string queryStr = "SELECT product_id,item_name,brand_name,category FROM products";
 

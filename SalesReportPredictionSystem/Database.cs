@@ -30,6 +30,12 @@ namespace SalesReportPredictionSystem
             }
         }
 
+        public static void Init()
+        {
+            handle = new MySqlConnection(ConnString);
+            handle.Open();
+        }
+
         public static DialogResult ShowError(MySqlException ex)
         {
             string suggestionMsg =
@@ -45,10 +51,34 @@ namespace SalesReportPredictionSystem
             );
         }
 
-        public static void Init()
+        public static void Reload()
         {
-            handle = new MySqlConnection(ConnString);
-            handle.Open();
+            if (Connected)
+                return;
+
+            bool retry = false;
+            try
+            {
+                Init();
+            }
+            catch (MySqlException ex)
+            {
+                handle = null;
+                var result = ShowError(ex);
+
+                if (result == DialogResult.Yes)
+                {
+                    var prompt = new ConnectionForm();
+                    prompt.ShowDialog();
+                    retry = prompt.DialogResult == DialogResult.Retry;
+                }
+            }
+
+            if (retry)
+                Reload();
+
+            if (!Database.Connected)
+                Environment.Exit(0); // Exits the program
         }
     }
 }
