@@ -112,14 +112,14 @@ namespace SalesReportPredictionSystem
 
         private void btnReportWeekly_Click(object sender, EventArgs e)
         {
-            ExportPrediciton();
+            ExportPrediciton(DateTime.Now.StartOfWeek(), 25);
         }
         private void btnReport_Click(object sender, EventArgs e)
         {
-            ExportPrediciton();
+            ExportPrediciton(DateTime.Now.StartOfMonth(), 100);
         }
 
-        private void ExportPrediciton()
+        private void ExportPrediciton(DateTime beginDate, int stockCeil)
         {
             ReloadDB();
 
@@ -129,27 +129,12 @@ namespace SalesReportPredictionSystem
             if (saveDlg.ShowDialog() != DialogResult.OK)
                 return;
 
-            DateTime current = DateTime.Now;
-            DateTime begin;
-
-            int stock;
-            if (rbMonthly.Checked)
-            {
-                begin = current.StartOfMonth();
-                stock = 100;
-            }
-            else
-            {
-                begin = current.StartOfWeek();
-                stock = 25;
-            }
-
-            string beginDate = begin.ToString("yyyy-MM-dd");
-            string endDate = current.ToString("yyyy-MM-dd");
+            string beginDateStr = beginDate.ToString("yyyy-MM-dd");
+            string endDateStr = DateTime.Now.ToString("yyyy-MM-dd");
 
             string queryStr =
-                "SELECT " + stock + "-COUNT(*) as stock_left,id,item_name,brand_name,category FROM current_sales " +
-                "WHERE sale_datetime >= '" + beginDate + "' AND sale_datetime <= '" + endDate + "' " +
+                "SELECT " + stockCeil + "-COUNT(*) as stock_left,id,item_name,brand_name,category FROM current_sales " +
+                "WHERE sale_datetime >= '" + beginDateStr + "' AND sale_datetime <= '" + endDateStr + "' " +
                 "GROUP BY Order_No" // should be 'id', but doesn't work as the DB tables aren't configured appropriately
             ;
 
