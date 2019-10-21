@@ -9,7 +9,7 @@ namespace SalesReportPredictionSystem
         public static MySqlConnection handle;
         public static bool Connected { get { return handle != null; } }
 
-        public static readonly string DateFormat = "yyyy-MM-dd mm:hh:ss";
+        public static readonly string DateFormat = "yyyy-MM-dd hh:mm:ss";
 
         public static string ServerName = "localhost";
         public static string DBName = "big_pharma";

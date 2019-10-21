@@ -50,7 +50,8 @@ namespace SalesReportPredictionSystem
 
             string queryStr =
                 "INSERT INTO current_sales (product_id, sale_datetime) " +
-                "VALUES (" + productId + ",'" + dateStr + "')";
+                "VALUES (" + productId + ", '" + dateStr + "');"
+            ;
 
             MySqlCommand cmd = new MySqlCommand(queryStr, Database.handle);
             cmd.ExecuteNonQuery();

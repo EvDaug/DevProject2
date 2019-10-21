@@ -15,15 +15,18 @@ namespace SalesReportPredictionSystem
     {
         public delegate void SelectDelegate();
 
-        private int _selectedId = -1;
-        public int SelectedID { get { return _selectedId; } }
+        private int _selectedId;
+        public int SelectedID
+        {
+            get { return _selectedId; }
+        }
 
         private IHasSubmit _parent;
 
         private Label _searchLbl;
         private TextBox _searchBox;
         private DataGridView _gridView;
-        private Label _resultLbl;
+        private TextBox _resultBox;
 
         private static DataGridViewTextBoxColumn NewColumn(string name)
         {
@@ -32,11 +35,12 @@ namespace SalesReportPredictionSystem
             return col;
         }
 
-        public ProductSearch(IHasSubmit parent)
+        public ProductSearch(IHasSubmit parent, int width = 450)
         {
             _parent = parent;
+            _selectedId = -1;
 
-            this.Size = new Size(450, 250);
+            this.Size = new Size(width, 250);
 
             _searchLbl = new Label();
             _searchLbl.Location = new Point(0, 0);
@@ -51,7 +55,7 @@ namespace SalesReportPredictionSystem
 
             _gridView = new DataGridView();
             _gridView.Location = new Point(0, 35);
-            _gridView.Size = new Size(450, 180);
+            _gridView.Size = new Size(width, 170);
             _gridView.ReadOnly = true;
             _gridView.AllowUserToAddRows = false;
             _gridView.AllowUserToDeleteRows = false;
@@ -67,15 +71,16 @@ namespace SalesReportPredictionSystem
             _gridView.Columns[0].Width /= 2;
             _gridView.SelectionChanged += selectionChangedHandler;
 
-            _resultLbl = new Label();
-            _resultLbl.Location = new Point(2, 220);
-            _resultLbl.Size = new Size(400, 30);
-            _resultLbl.Text = "";
+            _resultBox = new TextBox();
+            _resultBox.Location = new Point(2, 215);
+            _resultBox.Size = new Size(200, 30);
+            _resultBox.ReadOnly = true;
+            _resultBox.Text = "";
 
             this.Controls.Add(_searchLbl);
             this.Controls.Add(_searchBox);
             this.Controls.Add(_gridView);
-            this.Controls.Add(_resultLbl);
+            this.Controls.Add(_resultBox);
 
             Search();
         }
@@ -83,7 +88,7 @@ namespace SalesReportPredictionSystem
         private void SelectRow()
         {
             var row = this._gridView.SelectedRows[0];
-            _resultLbl.Text = row.Cells[1].Value.ToString();
+            _resultBox.Text = row.Cells[1].Value.ToString();
             _selectedId = Convert.ToInt32(row.Cells[0].Value);
             _parent.CanSubmit = true;
         }
