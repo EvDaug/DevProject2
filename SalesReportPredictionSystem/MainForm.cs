@@ -11,9 +11,9 @@ namespace SalesReportPredictionSystem
         public MainForm()
         {
             InitializeComponent();
-            //InitializeTables();
-            //InitializeGrid();
-            //ReloadGrid();
+            InitializeTables();
+            InitializeGrid();
+            ReloadGrid();
         }
         /*
         private void Form1_Load(object sender, EventArgs e)
