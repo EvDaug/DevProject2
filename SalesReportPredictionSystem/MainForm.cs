@@ -6,6 +6,8 @@ namespace SalesReportPredictionSystem
 {
     public partial class MainForm : Form
     {
+        private readonly string DefaultColumns = "order_no, products.item_name, products.brand_name, products.category, sale_datetime";
+
         public MainForm()
         {
             InitializeComponent();
@@ -13,34 +15,24 @@ namespace SalesReportPredictionSystem
             ReloadGrid();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            // fix window size
-            this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-        }
-
         // sets up the gridviews headers and buttons
         private void InitializeGrid()
         {
             // column header text
-            dgvStock.ColumnCount = 6;
+            dgvStock.ColumnCount = 5;
 
             dgvStock.Columns[0].HeaderText = "Order ID";
-            dgvStock.Columns[1].HeaderText = "Item ID";
-            dgvStock.Columns[2].HeaderText = "Item Name";
-            dgvStock.Columns[3].HeaderText = "Brand";
-            dgvStock.Columns[4].HeaderText = "Category";
-            dgvStock.Columns[5].HeaderText = "Time Sold";
-
+            dgvStock.Columns[1].HeaderText = "Item Name";
+            dgvStock.Columns[2].HeaderText = "Brand";
+            dgvStock.Columns[3].HeaderText = "Category";
+            dgvStock.Columns[4].HeaderText = "Time Sold";
 
             // create edit buttons for table column
             DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
             editButtonColumn.Name = "Edit Item";
             editButtonColumn.Text = "Edit";
             editButtonColumn.UseColumnTextForButtonValue = true;
-            int columnIndex = 6;
+            int columnIndex = 5;
             if (dgvStock.Columns["Edit Item"] == null)
             {
                 dgvStock.Columns.Insert(columnIndex, editButtonColumn);
@@ -48,80 +40,28 @@ namespace SalesReportPredictionSystem
             dgvStock.CellClick += dgvStock_CellClick;
         }
 
-        public void ReloadDB()
-        {
-            if (Database.Connected)
-                return;
-
-            bool retry = false;
-            try
-            {
-                Database.Init();
-            }
-            catch (MySqlException ex)
-            {
-                Database.handle = null;
-                var result = Database.ShowError(ex);
-
-                if (result == DialogResult.Yes)
-                {
-                    var prompt = new ConnectionForm();
-                    prompt.ShowDialog(this);
-                    retry = prompt.DialogResult == DialogResult.Retry;
-                }
-            }
-
-            if (retry)
-                ReloadDB();
-
-            if (!Database.Connected)
-                Environment.Exit(0); // Exits the program
-        }
-
-        // loads data into the gridview
-        private void ReloadGrid(string queryStr)
-        {
-            // clears table
-            dgvStock.Rows.Clear();
-
-            // populate table data
-            // this query updates the gui with everything in the data base
-            // may be more simple way to do this with datagridview??
-
-            ReloadDB();
-            MySqlCommand cmd = new MySqlCommand(queryStr, Database.handle);
-
-            var reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                string[] row = new string[reader.FieldCount];
-                for (int i = 0; i < row.Length; i++)
-                    row[i] = reader[i].ToString();
-
-                this.dgvStock.Rows.Add(row);
-
-            }
-            reader.Close();
-        }
-
         private void ReloadGrid()
         {
-            ReloadGrid("SELECT " + Database.DefaultColumns + " FROM current_sales");
+        	Utils.ReloadDB();
+            Utils.ReloadGrid(
+                this.dgvStock,
+                "SELECT " + DefaultColumns + " FROM current_sales " +
+                "INNER JOIN products on current_sales.product_id = products.product_id"
+            );
         }
 
         private void btnReportWeekly_Click(object sender, EventArgs e)
         {
-            ExportPrediciton(DateTime.Now.StartOfWeek(), 25);
+            ExportPrediction(DateTime.Now.StartOfWeek(), 25);
         }
         private void btnReport_Click(object sender, EventArgs e)
         {
-            ExportPrediciton(DateTime.Now.StartOfMonth(), 100);
+            ExportPrediction(DateTime.Now.StartOfMonth(), 100);
         }
 
-        private void ExportPrediciton(DateTime beginDate, int stockCeil)
+        private void ExportPrediction(DateTime beginDate, int stockCeil)
         {
-            ReloadDB();
+            Utils.ReloadDB();
 
             // Show a 'Save File' dialog so that the user can pick a folder & filename
             var saveDlg = new SaveFileDialog();
@@ -174,19 +114,18 @@ namespace SalesReportPredictionSystem
             string firstDateStr = firstDate.ToString("yyyy-MM-dd");
             string lastDateStr = lastDate.ToString("yyyy-MM-dd");
 
-            string queryStr = "SELECT " + Database.DefaultColumns + " FROM current_sales " +
+            string queryStr = "SELECT " + DefaultColumns + " FROM current_sales " +
                               "WHERE sale_datetime >= '" + firstDateStr + "' AND sale_datetime <= '" + lastDateStr + "'";
 
-            ReloadGrid(queryStr);
+            Utils.ReloadGrid(this.dgvStock, queryStr);
         }
 
         // add row to database
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddForm form = new AddForm();
+            var form = new AddSale();
             form.ShowDialog();
             ReloadGrid();
-
         }
 
         // reloads the data ito the gridview

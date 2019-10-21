@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-
 
 namespace SalesReportPredictionSystem
 {
@@ -16,7 +8,6 @@ namespace SalesReportPredictionSystem
     {
         public int id, index1;
         string strName, strBrand, strCategory, strSold;
-        public MainForm row;
 
         public EditForm(int i, string name, string brand, string category, string sold )
         {

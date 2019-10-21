@@ -8,7 +8,8 @@ namespace SalesReportPredictionSystem
     {
         public static MySqlConnection handle;
         public static bool Connected { get { return handle != null; } }
-        public static readonly string DefaultColumns = "Order_No,id,item_name,brand_name,category,sale_datetime";
+
+        public static readonly string DateFormat = "yyyy-MM-dd mm:hh:ss";
 
         public static string ServerName = "localhost";
         public static string DBName = "big_pharma";

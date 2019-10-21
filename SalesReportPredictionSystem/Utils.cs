@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using CsvHelper;
 
@@ -71,6 +72,58 @@ namespace SalesReportPredictionSystem
                     csv.NextRecord();
                 }
                 while (reader.Read());
+            }
+
+            reader.Close();
+        }
+
+        public static void ReloadDB()
+        {
+            if (Database.Connected)
+                return;
+
+            bool retry = false;
+            try
+            {
+                Database.Init();
+            }
+            catch (MySqlException ex)
+            {
+                Database.handle = null;
+                var result = Database.ShowError(ex);
+
+                if (result == DialogResult.Yes)
+                {
+                    var prompt = new ConnectionForm();
+                    prompt.ShowDialog();
+                    retry = prompt.DialogResult == DialogResult.Retry;
+                }
+            }
+
+            if (retry)
+                ReloadDB();
+
+            if (!Database.Connected)
+                Environment.Exit(0); // Exits the program
+        }
+
+        // loads data into the gridview
+        public static void ReloadGrid(DataGridView gridView, string queryStr)
+        {
+            // clears table
+            gridView.Rows.Clear();
+
+            //ReloadDB(this);
+            MySqlCommand cmd = new MySqlCommand(queryStr, Database.handle);
+            var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string[] row = new string[reader.FieldCount];
+                for (int i = 0; i < row.Length; i++)
+                    row[i] = reader[i].ToString();
+
+                gridView.Rows.Add(row);
             }
 
             reader.Close();

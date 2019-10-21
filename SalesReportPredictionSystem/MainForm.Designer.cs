@@ -155,7 +155,7 @@ namespace SalesReportPredictionSystem
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(350, 57);
             this.btnAdd.TabIndex = 12;
-            this.btnAdd.Text = "Add Item";
+            this.btnAdd.Text = "Add Sale";
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
@@ -221,7 +221,6 @@ namespace SalesReportPredictionSystem
 
             this.Name = "MainForm";
             this.Text = "Sales Prediction Report System";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
