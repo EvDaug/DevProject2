@@ -149,7 +149,6 @@ namespace SalesReportPredictionSystem
                 ", sale_datetime='" + _datePicker.Value.ToString(Database.DateFormat) + "' " +
                 "WHERE order_no=" + _orderNo
             ;
-            MessageBox.Show(queryStr);
             var cmd = new MySqlCommand(queryStr, Database.handle);
             cmd.ExecuteNonQuery();
 

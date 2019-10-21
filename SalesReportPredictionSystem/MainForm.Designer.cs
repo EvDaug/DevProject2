@@ -126,7 +126,7 @@ namespace SalesReportPredictionSystem
             this.lblDate.ForeColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.lblDate.Location = new System.Drawing.Point(59, 27);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(112, 46);
+            this.lblDate.Size = new System.Drawing.Size(90, 46);
             this.lblDate.TabIndex = 4;
             this.lblDate.Text = "Current Sales";
             // 

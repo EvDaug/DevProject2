@@ -69,7 +69,7 @@ namespace SalesReportPredictionSystem
                 }
             );
             _gridView.Columns[0].Width /= 2;
-            _gridView.SelectionChanged += selectionChangedHandler;
+            _gridView.CellClick += (s, e) => SelectRow();
 
             _resultBox = new TextBox();
             _resultBox.Location = new Point(2, 215);
@@ -95,7 +95,6 @@ namespace SalesReportPredictionSystem
 
         private void Search()
         {
-            _canSelect = false;
             _gridView.ClearSelection();
             Database.Reload();
 
@@ -110,14 +109,6 @@ namespace SalesReportPredictionSystem
             }
 
             Utils.ReloadGrid(this._gridView, queryStr);
-            _canSelect = true;
-        }
-
-        private bool _canSelect = true;
-        private void selectionChangedHandler(object sender, EventArgs e)
-        {
-            if (_canSelect && _gridView.SelectedRows.Count > 0)
-                SelectRow();
         }
     }
 }
