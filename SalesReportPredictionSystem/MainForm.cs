@@ -42,7 +42,7 @@ namespace SalesReportPredictionSystem
 
         private void ReloadGrid()
         {
-        	Utils.ReloadDB();
+            Utils.ReloadDB();
             Utils.ReloadGrid(
                 this.dgvStock,
                 "SELECT " + DefaultColumns + " FROM current_sales " +
