@@ -11,9 +11,9 @@ namespace SalesReportPredictionSystem
         public MainForm()
         {
             InitializeComponent();
-            InitializeTables();
-            InitializeGrid();
-            ReloadGrid();
+            //InitializeTables();
+            //InitializeGrid();
+            //ReloadGrid();
         }
         /*
         private void Form1_Load(object sender, EventArgs e)
@@ -222,17 +222,19 @@ namespace SalesReportPredictionSystem
         // gets data from row and loads edit form
         private void dgvStock_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            string orderProduct, orderBrand, orderCategory, orderSold;
+            int orderId;
+            string orderProduct, orderBrand, orderCategory, orderDate;
+
             if (e.ColumnIndex == dgvStock.Columns["Edit Item"].Index)
             {           
                 //find the prodcut id of current row
-                int orderId = int.Parse(this.dgvStock.Rows[e.RowIndex].Cells[0].Value.ToString());
+                orderId = int.Parse(this.dgvStock.Rows[e.RowIndex].Cells[0].Value.ToString());
                 orderProduct = dgvStock.Rows[e.RowIndex].Cells[2].Value.ToString();
                 orderBrand = dgvStock.Rows[e.RowIndex].Cells[3].Value.ToString();
                 orderCategory = dgvStock.Rows[e.RowIndex].Cells[4].Value.ToString();
-                orderSold = dgvStock.Rows[e.RowIndex].Cells[5].Value.ToString();
+                orderDate = dgvStock.Rows[e.RowIndex].Cells[5].Value.ToString();
 
-                EditForm form = new EditForm(orderId, orderProduct, orderBrand, orderCategory, orderSold);
+                EditForm form = new EditForm(orderId, orderProduct, orderBrand, orderCategory, DateTime.Parse(orderDate));
                 form.ShowDialog();
             }
         }

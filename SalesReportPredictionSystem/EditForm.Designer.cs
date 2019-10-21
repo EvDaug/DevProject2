@@ -23,14 +23,7 @@ namespace SalesReportPredictionSystem
             }
             base.Dispose(disposing);
         }
-        /*
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-          
-           
-
-        }
-        */
+        
 
         #region Windows Form Designer generated code
 
@@ -43,8 +36,6 @@ namespace SalesReportPredictionSystem
             this.tbName = new System.Windows.Forms.TextBox();
             this.tbBrand = new System.Windows.Forms.TextBox();
             this.tbCategory = new System.Windows.Forms.TextBox();
-            this.tbDate = new System.Windows.Forms.TextBox();
-            this.tbDate = new System.Windows.Forms.TextBox();
             this.lblBrand = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
@@ -53,6 +44,7 @@ namespace SalesReportPredictionSystem
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.dtpEditDate = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // tbName
@@ -76,13 +68,6 @@ namespace SalesReportPredictionSystem
             this.tbCategory.Size = new System.Drawing.Size(300, 31);
             this.tbCategory.TabIndex = 2;
             // 
-            // tbSold
-            // 
-            this.tbDate.Location = new System.Drawing.Point(299, 252);
-            this.tbDate.Name = "tbSold";
-            this.tbDate.Size = new System.Drawing.Size(300, 31);
-            this.tbDate.TabIndex = 3;
-            // 
             // lblBrand
             // 
             this.lblBrand.AutoSize = true;
@@ -93,12 +78,12 @@ namespace SalesReportPredictionSystem
             this.lblBrand.Text = "Brand";
             this.lblBrand.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // lblSold
+            // lblDate
             // 
             this.lblDate.AutoSize = true;
-            this.lblDate.Location = new System.Drawing.Point(178, 255);
-            this.lblDate.Name = "lblSold";
-            this.lblDate.Size = new System.Drawing.Size(115, 25);
+            this.lblDate.Location = new System.Drawing.Point(230, 255);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Size = new System.Drawing.Size(63, 25);
             this.lblDate.TabIndex = 6;
             this.lblDate.Text = "Date ";
             this.lblDate.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -163,11 +148,20 @@ namespace SalesReportPredictionSystem
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // dtpEditDate
+            // 
+            this.dtpEditDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpEditDate.Location = new System.Drawing.Point(300, 253);
+            this.dtpEditDate.Name = "dtpEditDate";
+            this.dtpEditDate.Size = new System.Drawing.Size(300, 31);
+            this.dtpEditDate.TabIndex = 14;
+            // 
             // EditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dtpEditDate);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnUpdate);
@@ -176,7 +170,6 @@ namespace SalesReportPredictionSystem
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.lblBrand);
-            this.Controls.Add(this.tbDate);
             this.Controls.Add(this.tbCategory);
             this.Controls.Add(this.tbBrand);
             this.Controls.Add(this.tbName);
@@ -193,7 +186,6 @@ namespace SalesReportPredictionSystem
         private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.TextBox tbBrand;
         private System.Windows.Forms.TextBox tbCategory;
-        private System.Windows.Forms.TextBox tbDate;
         private System.Windows.Forms.Label lblBrand;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.Label lblName;
@@ -202,5 +194,6 @@ namespace SalesReportPredictionSystem
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.DateTimePicker dtpEditDate;
     }
 }
