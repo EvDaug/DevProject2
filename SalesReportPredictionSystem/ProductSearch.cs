@@ -69,7 +69,7 @@ namespace SalesReportPredictionSystem
                 }
             );
             _gridView.Columns[0].Width /= 2;
-            _gridView.CellClick += (s, e) => SelectRow();
+            _gridView.CellClick += cellClickHandler;
 
             _resultBox = new TextBox();
             _resultBox.Location = new Point(2, 215);
@@ -83,14 +83,6 @@ namespace SalesReportPredictionSystem
             this.Controls.Add(_resultBox);
 
             Search();
-        }
-
-        private void SelectRow()
-        {
-            var row = this._gridView.SelectedRows[0];
-            _resultBox.Text = row.Cells[1].Value.ToString();
-            _selectedId = Convert.ToInt32(row.Cells[0].Value);
-            _parent.CanSubmit = true;
         }
 
         private void Search()
@@ -109,6 +101,14 @@ namespace SalesReportPredictionSystem
             }
 
             Utils.ReloadGrid(this._gridView, queryStr);
+        }
+
+        private void cellClickHandler(object sender, DataGridViewCellEventArgs e)
+        {
+            var row = this._gridView.Rows[e.RowIndex];
+            _resultBox.Text = row.Cells[1].Value.ToString();
+            _selectedId = Convert.ToInt32(row.Cells[0].Value);
+            _parent.CanSubmit = true;
         }
     }
 }
